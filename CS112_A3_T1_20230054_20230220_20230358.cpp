@@ -50,14 +50,17 @@ void save(Image image){
 
 // Get the image from the user to apply the filter.
 void load(string name){
-    try {
-    Image image(name);
+    while (true) {
+        try {
+        Image image(name);
+        cout << "- Photo Loaded Successfuly!\n";
+        break;
+        }
+        catch (invalid_argument) {
+            cout << "- Filename cannot be found!\nPlease enter a valid filename\N--> ";
+            getline(cin, name);
+        }
     }
-    catch (invalid_argument) {
-        cout << "- Filename cannot be found!\n";
-    }
-
-    cout << "- Photo Loaded Successfuly!\n";
 
 }
 
