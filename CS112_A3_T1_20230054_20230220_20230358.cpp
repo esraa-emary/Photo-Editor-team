@@ -11,6 +11,7 @@ Version: 1.0
 //========================================================================================================================================//
 #include <iostream>
 #include <bits/stdc++.h>
+#include "Image_Class\Image_Class.h"
 using namespace std;
 
 // Save the effect in a new photo or the same one.
@@ -37,13 +38,26 @@ void how_to_save(){
 
 //============================================================================================================================================//
 
-// Save the image after applying the filter.
-void saving(){
 
+// Save the image after applying the filter.
+void save(Image image){
+    string new_name;
+    cout << "- Please enter the new filename\n-->";
+    getline(cin, new_name);
+    image.saveImage(new_name);
+    cout << "- Photo has been saved successfully";
 }
 
 // Get the image from the user to apply the filter.
-void uploading(string photo){
+void load(string name){
+    try {
+    Image image(name);
+    }
+    catch (invalid_argument) {
+        cout << "- Filename cannot be found!\n";
+    }
+
+    cout << "- Photo Loaded Successfuly!\n";
 
 }
 
@@ -80,7 +94,7 @@ int main(){
                     cout << "Please enter the photo name: ";
                     getline(cin, photo);
                     cin.ignore(0);
-                    uploading(photo);
+                    load(photo);
                     // filter1(photo);
                     break;
                 }
