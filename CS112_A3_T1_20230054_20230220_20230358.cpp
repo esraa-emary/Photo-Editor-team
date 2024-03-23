@@ -57,7 +57,7 @@ void load(string name){
         break;
         }
         catch (invalid_argument) {
-            cout << "- Filename cannot be found!\nPlease enter a valid filename\N--> ";
+            cout << "- Filename cannot be found!\nPlease enter a valid filename\n--> ";
             getline(cin, name);
         }
     }
