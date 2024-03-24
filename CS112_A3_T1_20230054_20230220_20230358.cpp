@@ -49,12 +49,12 @@ void save(Image image){
 }
 
 // Get the image from the user to apply the filter.
-void load(string name){
+string load(string name){
     while (true) {
         try {
         Image image(name);
         cout << "- Photo Loaded Successfuly!\n";
-        return;
+        return name;
         }
         catch (invalid_argument) {
             cout << "- Filename cannot be found!\nPlease enter a valid filename\n--> ";
@@ -76,12 +76,12 @@ int main(){
     {
         // Print the menu for choosing what the user want to do.
         cout << "\n----------------------------------------------------------------------" << endl << endl;
-        cout << "What do you want to do ?\n[1] Appling a fiter to a photo.\n[2] Exit.\nChoice: ";
+        cout << "What do you want to do ?\n[1] Apply a filter to a photo.\n[2] Exit.\nChoice: ";
         string choice;
         getline(cin, choice);
         cin.ignore(0);  
 
-        // Appling a filter to the entered photo.
+        // Applying a filter to the entered photo.
         if(choice == "1"){
             while (true){
                 cout << "\n----------------------------------------------------------------------" << endl << endl;
@@ -90,14 +90,14 @@ int main(){
                 getline(cin, choice1);
                 cin.ignore(0);
 
-                // Appling filter1 (Grayscale Conversion).
+                // Applying filter1 (Grayscale Conversion).
                 if (choice1 == "1")
                 {
                     string photo;
                     cout << "Please enter the photo name: ";
                     getline(cin, photo);
                     cin.ignore(0);
-                    load(photo);
+                    photo = load(photo);
                     Image image(photo);
                     for (int i = 0; i < image.width; ++i) {
                         for (int j = 0; j < image.height; ++j) {
