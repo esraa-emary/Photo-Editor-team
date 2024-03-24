@@ -1,5 +1,4 @@
 // A demo for converting image to gray scale
-
 #include <iostream>
 using namespace std;
 #include "Image_Class.h"
@@ -32,7 +31,7 @@ int main() {
     cout << "and specify extension .jpg, .bmp, .png, .tga: ";
 
     cin >> filename;
-    image.saveImage(filename);
+    //image.saveImage(filename);
 
     return 0;
 }

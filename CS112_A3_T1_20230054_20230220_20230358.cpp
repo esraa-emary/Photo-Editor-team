@@ -54,7 +54,7 @@ void load(string name){
         try {
         Image image(name);
         cout << "- Photo Loaded Successfuly!\n";
-        break;
+        return;
         }
         catch (invalid_argument) {
             cout << "- Filename cannot be found!\nPlease enter a valid filename\n--> ";
@@ -98,7 +98,26 @@ int main(){
                     getline(cin, photo);
                     cin.ignore(0);
                     load(photo);
-                    // filter1(photo);
+                    Image image(photo);
+                    for (int i = 0; i < image.width; ++i) {
+                        for (int j = 0; j < image.height; ++j) {
+                            unsigned  int avg = 0; // Initialize average value
+
+                            for (int k = 0; k < 3; ++k) {
+                                avg += image(i, j, k); // Accumulate pixel values
+                            }
+
+                            avg /= 3; // Calculate average
+
+                            // Set all channels to the average value
+                            image(i, j, 0) = avg;
+                            image(i, j, 1) = avg;
+                            image(i, j, 2) = avg;
+                        }
+                    }
+                    image.saveImage("nice.jpg");
+
+                    cout << "Please enter the new filename and extension (or press enter to save changes to the same file): ";
                     break;
                 }
 
