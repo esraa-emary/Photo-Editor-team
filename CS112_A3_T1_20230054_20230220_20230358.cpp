@@ -463,7 +463,7 @@ int main(){
                 }
 
                 // Applying filter7 (Flip Image).
-                else if (choice1 == "5")
+                else if (choice1 == "7")
                 {
                     Flip();
                 }
