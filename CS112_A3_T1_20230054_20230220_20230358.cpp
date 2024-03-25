@@ -11,24 +11,36 @@ Version: 1.0
 //========================================================================================================================================//
 #include <iostream>
 #include <bits/stdc++.h>
-#include "Image_Class\Image_Class.h"
+#include "Image_Class.h"
 using namespace std;
 
+
 // Save the effect in a new photo or the same one.
-void how_to_save(){
+void how_to_save(Image image, const string name){
     cout << "Do you want to save the effect in a new photo or replace the base ?\n[1] New photo.\n[2] Replace the base.\nChoice: ";
     while (true)
     {
         string choice;
         getline(cin, choice);
-        cin.ignore(0,'\n');
+
+        // Save the effect in a new photo.
         if(choice == "1"){
-            
+            string new_name;
+            cout << "- Please enter the new filename\n-->";
+            getline(cin, new_name);
+            image.saveImage(new_name);
+            cout << "- Photo has been saved successfully";
+            break;
         }
         
-        else if(choice == "2")
+        // Save the effect in the same photo.
+        else if(choice == "2"){
+            image.saveImage(name);
+            cout << "- Photo has been saved successfully";
             break;
+        }
         
+        // Invalid choice.
         else{
             cout << "Please enter a valid choice." << endl << endl;   
             continue;
@@ -36,32 +48,20 @@ void how_to_save(){
     }
 }
 
-//============================================================================================================================================//
-
-
-// Save the image after applying the filter.
-void save(Image image){
-    string new_name;
-    cout << "- Please enter the new filename\n-->";
-    getline(cin, new_name);
-    image.saveImage(new_name);
-    cout << "- Photo has been saved successfully";
-}
-
 // Get the image from the user to apply the filter.
 string load(string name){
     while (true) {
+        cout << endl;
         try {
         Image image(name);
-        cout << "- Photo Loaded Successfuly!\n";
+        cout << "- Photo Loaded Successfuly!\n" << endl;
         return name;
         }
         catch (invalid_argument) {
-            cout << "- Filename cannot be found!\nPlease enter a valid filename\n--> ";
+            cout << "Please enter a valid file name: ";
             getline(cin, name);
         }
     }
-
 }
 
 //================================================================= Main Program ==============================================================//
@@ -79,7 +79,6 @@ int main(){
         cout << "What do you want to do ?\n[1] Apply a filter to a photo.\n[2] Exit.\nChoice: ";
         string choice;
         getline(cin, choice);
-        cin.ignore(0);  
 
         // Applying a filter to the entered photo.
         if(choice == "1"){
@@ -88,7 +87,6 @@ int main(){
                 cout << "What filter do you want to apply ?\n[1] Grayscale Conversion.\n[2] .\n[3] .\n[4] .\n[5] .\n[6] Back.\nChoice: ";
                 string choice1;
                 getline(cin, choice1);
-                cin.ignore(0);
 
                 // Applying filter1 (Grayscale Conversion).
                 if (choice1 == "1")
@@ -96,32 +94,43 @@ int main(){
                     string photo;
                     cout << "Please enter the photo name: ";
                     getline(cin, photo);
-                    cin.ignore(0);
                     photo = load(photo);
                     Image image(photo);
                     for (int i = 0; i < image.width; ++i) {
                         for (int j = 0; j < image.height; ++j) {
-                            unsigned  int avg = 0; // Initialize average value
+                            unsigned  int avg = 0; 
 
                             for (int k = 0; k < 3; ++k) {
-                                avg += image(i, j, k); // Accumulate pixel values
+                                avg += image(i, j, k); 
                             }
-
-                            avg /= 3; // Calculate average
-
-                            // Set all channels to the average value
+                            avg /= 3;
                             image(i, j, 0) = avg;
                             image(i, j, 1) = avg;
                             image(i, j, 2) = avg;
                         }
                     }
-                    image.saveImage("nice.jpg");
+                    how_to_save(photo,photo);
 
                     cout << "Please enter the new filename and extension (or press enter to save changes to the same file): ";
                     break;
                 }
 
                 // else if (choice1 == "2")
+                // {
+                    
+                // }
+
+                // else if (choice1 == "3")
+                // {
+                    
+                // }
+
+                // else if (choice1 == "4")
+                // {
+                    
+                // }
+
+                // else if (choice1 == "5")
                 // {
                     
                 // }
@@ -153,5 +162,3 @@ int main(){
     cout << "\n#===== Thanks for using our application =====#" << endl;
     return 0;
 }
-    
-   
