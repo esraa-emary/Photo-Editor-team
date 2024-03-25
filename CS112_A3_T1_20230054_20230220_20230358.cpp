@@ -129,6 +129,8 @@ int main(){
                             string photo;
                             cout << "Please enter the photo name: ";
                             getline(cin, photo);
+                            string photophoto;
+                            photophoto = photo;
                             photo = load(photo);
                             Image image(photo);
                             float darken = 0.5;
@@ -140,7 +142,7 @@ int main(){
                                     }
                                 }
                             }
-                            how_to_save(photo,photo);
+                            how_to_save(image,photophoto);
                         }
 
                         // Lighten The Image.
@@ -148,9 +150,11 @@ int main(){
                             string photo;
                             cout << "Please enter the photo name: ";
                             getline(cin, photo);
+                            string photophoto;
+                            photophoto = photo;
                             photo = load(photo);
                             Image image(photo);
-                            float lighten = 1.5;
+                            float lighten = 1.1;
                             for (int i = 0; i < image.width; ++i) {
                                 for (int j = 0; j < image.height; ++j) {
 
@@ -159,7 +163,7 @@ int main(){
                                     }
                                 }
                             }
-                            how_to_save(photo,photo);
+                            how_to_save(image,photophoto);
                         }
 
                         // Back to the main menu.
