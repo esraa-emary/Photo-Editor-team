@@ -11,7 +11,7 @@ Version: 1.0
 //========================================================================================================================================//
 #include <iostream>
 #include <bits/stdc++.h>
-#include "Image_Class/Image_Class.h"
+#include "Image_Class.h"
 using namespace std;
 
 
@@ -26,7 +26,7 @@ void how_to_save(Image image, string photophoto){
         // Save the effect in a new photo.
         if(choice == "1"){
             string new_name;
-            cout << "- Please enter the new filename\n-->";
+            cout << "- Please enter the new file name\n-->";
             getline(cin, new_name);
             image.saveImage(new_name);
             cout << "- Photo has been saved successfully";
@@ -46,6 +46,15 @@ void how_to_save(Image image, string photophoto){
             continue;
         }
     }
+}
+
+// Save the effect in a new photo only.
+void how_to_save2(Image image){
+    string new_name;
+    cout << "- Please enter the new file name\n-->";
+    getline(cin, new_name);
+    image.saveImage(new_name);
+    cout << "- Photo has been saved successfully";
 }
 
 // Get the image from the user to apply the filter.
@@ -84,7 +93,7 @@ int main(){
         if(choice == "1"){
             while (true){
                 cout << "\n----------------------------------------------------------------------" << endl << endl;
-                cout << "What filter do you want to apply ?\n[1] Grayscale Conversion.\n[2] Darken and Lighten Image.\n[3]Invert Image.\n[4] .\n[5] .\n[6] Back.\nChoice: ";
+                cout << "What filter do you want to apply ?\n[1] Grayscale Conversion.\n[2] Darken and Lighten Image.\n[3] Merge Images.\n[4] Invert Image.\n[5] .\n[6] Back.\nChoice: ";
                 string choice1;
                 getline(cin, choice1);
 
@@ -94,8 +103,6 @@ int main(){
                     string photo;
                     cout << "Please enter the photo name: ";
                     getline(cin, photo);
-                    string photophoto;
-                    photophoto = photo;
                     photo = load(photo);
                     Image image(photo);
                     for (int i = 0; i < image.width; ++i) {
@@ -111,7 +118,7 @@ int main(){
                             image(i, j, 2) = avg;
                         }
                     }
-                    how_to_save(image,photophoto);
+                    how_to_save(image,photo);
                 }
 
                 // Applying filter2 (Darken and Lighten Image).
@@ -127,45 +134,45 @@ int main(){
                         // Darken The Image.
                         if (choice2 ==  "1"){
                             string photo;
-                            cout << "Please enter the photo name: ";
+                            cout << "- Please enter the file name\n-->";
                             getline(cin, photo);
                             photo = load(photo);
                             Image image(photo);
                             float darken = 0.5;
                             for (int i = 0; i < image.width; ++i) {
                                 for (int j = 0; j < image.height; ++j) {
-
                                     for (int k = 0; k < 3; ++k) {
                                         image(i, j, k) *= darken; 
                                     }
                                 }
                             }
-                            how_to_save(photo,photo);
+                            how_to_save(image,photo);
+                            break;
                         }
 
                         // Lighten The Image.
                         else if(choice2 == "2"){
                             string photo;
-                            cout << "Please enter the photo name: ";
+                            cout << "- Please enter the file name\n-->";
                             getline(cin, photo);
                             photo = load(photo);
                             Image image(photo);
-                            float lighten = 1.5;
+                            float lighten = 1.125;
                             for (int i = 0; i < image.width; ++i) {
                                 for (int j = 0; j < image.height; ++j) {
-
                                     for (int k = 0; k < 3; ++k) {
                                         image(i, j, k) *= lighten;
                                     }
                                 }
                             }
-                            how_to_save(photo,photo);
+                            how_to_save(image,photo);
+                            break;
                         }
-                    
+
                         // Back to the main menu.
-                         if (choice2 =="3")
-                        { 
-                         
+                        else if (choice2 =="3")
+                        {
+                            break;
                         }
 
                         else{
@@ -175,26 +182,57 @@ int main(){
                     }
                 }
 
-                 else if (choice1 == "3")
-                 {
-                       string photo_name;
-                            cout << "Please enter the photo name: ";
-                            getline(cin, photo_name);
-                            photo_name = load(photo_name);
-                            Image image(photo_name);
-             for(int i=0; i<image.width; i++){
-                   for(int j=0; j<image.height; j++){
-                   for(int k=0; k<3; k++){
-                    image(i,j,k)=-image(i,j,k);
-            }}}
-                how_to_save(image,photo_name);
-                            break;
-                 }
+                // Applying filter3 (Merge Images).
+                else if (choice1 == "3")
+                {
+                    string photo1;
+                    cout << "- Please enter the first file name\n-->";
+                    getline(cin, photo1);
+                    photo1 = load(photo1);
+                    Image photo11(photo1);
 
-                // else if (choice1 == "4")
-                // {
-                    
-                // }
+                    string photo2;
+                    cout << "- Please enter the second file name\n-->";
+                    getline(cin, photo2);
+                    photo2 = load(photo2);
+                    Image photo22(photo2);
+
+                    int new_width = min(photo11.width, photo22.width);
+                    int new_height = min(photo11.height, photo22.height);
+                    photo1.resize(new_width, new_height);
+                    photo2.resize(new_width, new_height);
+                    Image photo_result(photo11.width, photo11.height);
+
+                    for (int i = 0; i < photo_result.width; ++i) {
+                        for (int j = 0; j < photo_result.height; ++j) {
+                            for (int k = 0; k < 3; ++k) {
+                                int avrg = 0;
+                                // avrg = (photo11(i,j,k) + photo22(i,j,k))/2;
+                                photo_result(i, j, k) +=avrg;
+                            }
+                        }
+                    }
+                    how_to_save2(photo_result);
+                }
+
+                // Applying filter4 (Invert Image).
+                else if (choice1 == "4")
+                {
+                    string photo_name;
+                    cout << "Please enter the photo name: ";
+                    getline(cin, photo_name);
+                    photo_name = load(photo_name);
+                    Image image(photo_name);
+                    for(int i=0; i<image.width; i++){
+                        for(int j=0; j<image.height; j++){
+                            for(int k=0; k<3; k++){
+                                image(i,j,k)=-image(i,j,k);
+                            }
+                        }  
+                    }
+                    how_to_save(image,photo_name);
+                    break;
+                }
 
                 // else if (choice1 == "5")
                 // {
@@ -222,6 +260,23 @@ int main(){
         else{
             cout << "Please enter a valid choice." << endl;   
             continue;
+        }
+
+        // Continue or exit.
+        while (true)
+        {
+            cout << "\n----------------------------------------------------------------------" << endl << endl;
+            cout << "Do you want to continue in our application ?\n[1] YES.\n[2] NO.\nChoice: ";
+            string choice3;
+            getline(cin, choice3);
+            if(choice3 == "1")
+                continue;
+            else if(choice3 == "2")
+                break;
+            else{
+                cout << "Please enter a valid choice." << endl;   
+                continue;
+            }
         }
     }
 
