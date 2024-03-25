@@ -16,7 +16,7 @@ using namespace std;
 
 
 // Save the effect in a new photo or the same one.
-void how_to_save(Image image, const string name){
+void how_to_save(Image image, string photophoto){
     cout << "Do you want to save the effect in a new photo or replace the base ?\n[1] New photo.\n[2] Replace the base.\nChoice: ";
     while (true)
     {
@@ -35,7 +35,7 @@ void how_to_save(Image image, const string name){
         
         // Save the effect in the same photo.
         else if(choice == "2"){
-            image.saveImage(name);
+            image.saveImage(photophoto);
             cout << "- Photo has been saved successfully";
             break;
         }
@@ -94,6 +94,8 @@ int main(){
                     string photo;
                     cout << "Please enter the photo name: ";
                     getline(cin, photo);
+                    string photophoto;
+                    photophoto = photo;
                     photo = load(photo);
                     Image image(photo);
                     for (int i = 0; i < image.width; ++i) {
@@ -109,7 +111,7 @@ int main(){
                             image(i, j, 2) = avg;
                         }
                     }
-                    how_to_save(photo,photo);
+                    how_to_save(image,photophoto);
                 }
 
                 // Applying filter2 (Darken and Lighten Image).
