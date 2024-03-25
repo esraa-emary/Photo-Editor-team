@@ -348,6 +348,7 @@ int main(){
                 else if (choice1 == "5")
                 {
                     Rotate_Image();
+                    break;
                 }
 
                 // Back to the main menu.
