@@ -77,7 +77,7 @@ string load(string name){
 // Filter1 (Grayscale Conversion).
 void Grayscale_Conversion(){
     string photo;
-    cout << "Please enter the photo name: ";
+    cout << "- Please enter the file name\n-->";
     getline(cin, photo);
     photo = load(photo);
     Image image(photo);
@@ -189,7 +189,7 @@ void Merge_Images(){
 // Filter4 (Invert Image).
 void Invert_Image(){
     string photo_name;
-    cout << "Please enter the photo name: ";
+    cout << "- Please enter the file name\n-->";
     getline(cin, photo_name);
     photo_name = load(photo_name);
     Image image(photo_name);
@@ -208,7 +208,7 @@ void Rotate_Image(){
     while (true)
     {
         cout << "\n----------------------------------------------------------------------" << endl << endl;
-        cout << "What rotation do you want ?\n[1] Rotate 90°.\n[2] Rotate 180°.\n[3] Rotate 270°.\n[4] Back.\nChoice: ";
+        cout << "What rotation do you want ?\n[1] Rotate 90.\n[2] Rotate 180.\n[3] Rotate 270.\n[4] Back.\nChoice: ";
         string choice2;
         getline(cin, choice2);
 
@@ -277,7 +277,7 @@ void Rotate_Image(){
                     }
                 }
             }
-            how_to_save(image,photo);
+            how_to_save(rotate,photo);
             break;
         }
 
