@@ -11,7 +11,7 @@ Version: 1.0
 //========================================================================================================================================//
 #include <iostream>
 #include <bits/stdc++.h>
-#include "Image_Class.h"
+#include "Image_Class/Image_Class.h"
 using namespace std;
 
 
@@ -196,7 +196,7 @@ void Invert_Image(){
     for(int i=0; i<image.width; i++){
         for(int j=0; j<image.height; j++){
             for(int k=0; k<3; k++){
-                image(i,j,k)=-image(i,j,k);
+                image(i,j,k)= -image(i,j,k);
             }
         }  
     }
@@ -292,6 +292,101 @@ void Rotate_Image(){
     }
 }
 
+
+// Filter 6 (Black and White)
+void Black_n_White() {
+    cout << "\n----------------------------------------------------------------------\n\n";
+    string photo_name;
+    cout << "Please enter the photo name: ";
+    getline(cin, photo_name);
+    photo_name = load(photo_name);
+    Image image(photo_name);
+
+    for (int i = 0; i < image.width; i++) {
+        for (int j = 0; j < image.height; j++) {
+            unsigned  int avg = 0;
+
+            for (int k = 0; k < 3; k++) {
+                avg += image(i, j, k);
+            }
+
+            avg /= 3; // Calculate average
+            int val;
+            if (avg > 127) {
+                val = 255;
+            }
+            else {
+                val = 0;
+            }
+            // Set all channels to either 0 or 255 (to obtain black and white only)
+            image(i, j, 0) = val;
+            image(i, j, 1) = val;
+            image(i, j, 2) = val;
+        }
+    }
+    how_to_save(image, photo_name);
+}
+
+// Filter 7 (Flip)
+void Flip() {
+    while (true) {
+        cout << "\n----------------------------------------------------------------------\n\n";
+        cout << "Do you want to flip horizontally or vertically ?\n"
+             << "[1] Horizontally\n"
+             << "[2] Vertically\n"
+             << "[3] Back.\n"
+             << "Choice: ";
+        string choice;
+        getline(cin, choice);
+
+        string photo_name;
+        cout << "Please enter the photo name: ";
+        getline(cin, photo_name);
+        photo_name = load(photo_name);
+        Image image(photo_name);
+
+        int width = image.width;
+        int height = image.height;
+
+        // Flip horizontally
+        if (choice == "1") {
+            for (int i = 0; i < width/2; i++) {     // Loop until reaching half of the image width
+                for (int j = 0; j < height; j++) {
+                    int temp;
+
+                    for (int k = 0; k < 3; k++) {
+                        temp = image(i, j, k);      // Temp variable to store the pixel before swapping
+                        image(i, j, k) = image(width - 1 - i, j, k);    // Swap the pixel with each opposite one (horizontally)
+                        image(width - 1 - i, j, k) = temp;  // Assign the old value to the opposite pixel
+                    }
+
+                }
+            }
+        }
+
+        // Flip vertically
+        else if (choice == "2") {
+            for (int i = 0; i < width; i++) {
+                for (int j = 0; j < height/2; j++) {    // Loop until reaching half of the image width
+                    int temp;
+
+                    for (int k = 0; k < 3; k++) {
+                        temp = image(i, j, k);          // Temp variable to store the pixel before swapping
+                        image(i, j, k) = image(i, height - 1 - j, k);   // Swap the pixel with each opposite one (vertically)
+                        image(i, height - 1 - j, k) = temp;
+                    }
+
+                }
+            }
+        }
+
+        else
+            break;
+    how_to_save(image, photo_name);
+    }
+}
+
+
 //================================================================= Main Program ==============================================================//
 
 int main(){
@@ -312,7 +407,16 @@ int main(){
         if(choice == "1"){
             while (true){
                 cout << "\n----------------------------------------------------------------------" << endl << endl;
-                cout << "What filter do you want to apply ?\n[1] Grayscale Conversion.\n[2] Darken and Lighten Image.\n[3] Merge Images.\n[4] Invert Image.\n[5] Rotate Image.\n[6] Back.\nChoice: ";
+                cout << "What filter do you want to apply ?\n"
+                     << "[1] Grayscale Conversion.\n"
+                     << "[2] Darken and Lighten Image.\n"
+                     << "[3] Merge Images.\n"
+                     << "[4] Invert Image.\n"
+                     << "[5] Rotate Image.\n"
+                     << "[6] Black and White.\n"
+                     << "[7] Flip.\n"
+                     << "[8] Back.\n"
+                     << "Choice: ";
                 string choice1;
                 getline(cin, choice1);
 
@@ -351,8 +455,21 @@ int main(){
                     break;
                 }
 
+                // Applying filter6 (Black and White Image).
+                else if (choice1 == "6")
+                {
+                    Black_n_White();
+                    break;
+                }
+
+                // Applying filter7 (Flip Image).
+                else if (choice1 == "5")
+                {
+                    Flip();
+                }
+
                 // Back to the main menu.
-                else if (choice1 =="6")
+                else if (choice1 =="8")
                     break;
 
                 // Invalid choice.
