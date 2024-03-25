@@ -11,7 +11,7 @@ Version: 1.0
 //========================================================================================================================================//
 #include <iostream>
 #include <bits/stdc++.h>
-#include "Image_Class.h"
+#include "Image_Class/Image_Class.h"
 using namespace std;
 
 
@@ -84,7 +84,7 @@ int main(){
         if(choice == "1"){
             while (true){
                 cout << "\n----------------------------------------------------------------------" << endl << endl;
-                cout << "What filter do you want to apply ?\n[1] Grayscale Conversion.\n[2] Darken and Lighten Image.\n[3] .\n[4] .\n[5] .\n[6] Back.\nChoice: ";
+                cout << "What filter do you want to apply ?\n[1] Grayscale Conversion.\n[2] Darken and Lighten Image.\n[3]Invert Image.\n[4] .\n[5] .\n[6] Back.\nChoice: ";
                 string choice1;
                 getline(cin, choice1);
 
@@ -129,8 +129,6 @@ int main(){
                             string photo;
                             cout << "Please enter the photo name: ";
                             getline(cin, photo);
-                            string photophoto;
-                            photophoto = photo;
                             photo = load(photo);
                             Image image(photo);
                             float darken = 0.5;
@@ -142,7 +140,7 @@ int main(){
                                     }
                                 }
                             }
-                            how_to_save(image,photophoto);
+                            how_to_save(photo,photo);
                         }
 
                         // Lighten The Image.
@@ -150,11 +148,9 @@ int main(){
                             string photo;
                             cout << "Please enter the photo name: ";
                             getline(cin, photo);
-                            string photophoto;
-                            photophoto = photo;
                             photo = load(photo);
                             Image image(photo);
-                            float lighten = 1.1;
+                            float lighten = 1.5;
                             for (int i = 0; i < image.width; ++i) {
                                 for (int j = 0; j < image.height; ++j) {
 
@@ -163,13 +159,13 @@ int main(){
                                     }
                                 }
                             }
-                            how_to_save(image,photophoto);
+                            how_to_save(photo,photo);
                         }
-
+                    
                         // Back to the main menu.
-                        else if (choice2 =="3")
-                        {
-                            break;
+                         if (choice2 =="3")
+                        { 
+                         
                         }
 
                         else{
@@ -179,10 +175,21 @@ int main(){
                     }
                 }
 
-                // else if (choice1 == "3")
-                // {
-                    
-                // }
+                 else if (choice1 == "3")
+                 {
+                       string photo_name;
+                            cout << "Please enter the photo name: ";
+                            getline(cin, photo_name);
+                            photo_name = load(photo_name);
+                            Image image(photo_name);
+             for(int i=0; i<image.width; i++){
+                   for(int j=0; j<image.height; j++){
+                   for(int k=0; k<3; k++){
+                    image(i,j,k)=-image(i,j,k);
+            }}}
+                how_to_save(image,photo_name);
+                            break;
+                 }
 
                 // else if (choice1 == "4")
                 // {
