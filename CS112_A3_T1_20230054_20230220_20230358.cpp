@@ -203,6 +203,95 @@ void Invert_Image(){
     how_to_save(image,photo_name);
 }
 
+// Filter5 (Rotate Image).
+void Rotate_Image(){
+    while (true)
+    {
+        cout << "\n----------------------------------------------------------------------" << endl << endl;
+        cout << "What rotation do you want ?\n[1] Rotate 90°.\n[2] Rotate 180°.\n[3] Rotate 270°.\n[4] Back.\nChoice: ";
+        string choice2;
+        getline(cin, choice2);
+
+        // Rotate 90°.
+        if (choice2 ==  "1"){
+            string photo;
+            int width,height;
+            cout << "- Please enter the file name\n-->";
+            getline(cin, photo);
+            photo = load(photo);
+            Image image(photo);
+             width = image.width;
+            height = image.height;
+            Image rotate(height,width);
+            cout<<rotate.width<<" "<<image.height<<endl;   
+            for(int x=1;x<image.width;x++){
+                for(int y=1; y<image.height;y++){
+                    for(int z=0; z<3;z++){
+                        rotate(y ,x ,z) = image(x, image.height - y, z);
+                    }
+                }
+            }
+            how_to_save(rotate, photo);
+            break;
+        }
+
+        // Rotate 180°.
+        else if(choice2 == "2"){
+            string photo;
+            int width,height;
+            cout << "- Please enter the file name\n-->";
+            getline(cin, photo);
+            photo = load(photo);
+            Image image(photo);
+             width = image.width;
+            height = image.height;
+            Image rotate(height,width);
+            Image rotate180(width,height);
+            for(int x=1;x<width;x++){
+                for(int y=1; y<height;y++){
+                    for(int z=0; z<3;z++){
+                        rotate180(x, y, z) = image(width - x,height - y, z);
+                    }
+                }
+            }
+            rotate=rotate180;
+            how_to_save(rotate, photo);
+            break;
+        }
+
+        // Rotate 270°.
+        else if(choice2 == "3"){
+            string photo;
+            int width,height;
+            cout << "- Please enter the file name\n-->";
+            getline(cin, photo);
+            photo = load(photo);
+            Image image(photo);
+             width = image.width;
+            height = image.height;
+            Image rotate(height,width);
+            for(int x=0;x<rotate.width;x++){
+                for(int y=0; y<rotate.height;y++){
+                    for(int z=0; z<3;z++){
+                        rotate(x,y,z)=image(rotate.height - y, x, z);
+                    }
+                }
+            }
+            how_to_save(image,photo);
+            break;
+        }
+
+        // Back to the main menu.
+        else if (choice2 =="4")
+            break;
+
+        else{
+            cout << "Please enter a valid choice." << endl;   
+            continue;
+        }
+    }
+}
+
 //================================================================= Main Program ==============================================================//
 
 int main(){
@@ -223,7 +312,7 @@ int main(){
         if(choice == "1"){
             while (true){
                 cout << "\n----------------------------------------------------------------------" << endl << endl;
-                cout << "What filter do you want to apply ?\n[1] Grayscale Conversion.\n[2] Darken and Lighten Image.\n[3] Merge Images.\n[4] Invert Image.\n[5] .\n[6] Back.\nChoice: ";
+                cout << "What filter do you want to apply ?\n[1] Grayscale Conversion.\n[2] Darken and Lighten Image.\n[3] Merge Images.\n[4] Invert Image.\n[5] Rotate Image.\n[6] Back.\nChoice: ";
                 string choice1;
                 getline(cin, choice1);
 
@@ -255,10 +344,11 @@ int main(){
                     break;
                 }
 
-                // else if (choice1 == "5")
-                // {
-                    
-                // }
+                // Applying filter5 (Rotate Image).
+                else if (choice1 == "5")
+                {
+                    Rotate_Image();
+                }
 
                 // Back to the main menu.
                 else if (choice1 =="6")
