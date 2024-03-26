@@ -465,8 +465,8 @@ int main(){
             while (true){
                 cout << "\n----------------------------------------------------------------------" << endl << endl;
                 cout << "What filter do you want to apply ?\n"<< "[1] Grayscale Conversion.\n"<< "[2] Darken and Lighten Image.\n"
-                    << "[3] Merge Images.\n"<< "[4] Invert Image.\n"<< "[5] Rotate Image.\n"<< "[6] Black and White.\n"
-                    << "[7] Flip.\n"<< "[8] Back.\n"<< "Choice: ";
+                    << "[3] Merge Images.\n"<< "[4] Invert Image.\n"<< "[5] Rotate Image.\n"<< "[6] Black and White Image.\n"
+                    << "[7] Flip Image.\n"<< "[8] Back.\n"<< "Choice: ";
                 string choice1;
                 getline(cin, choice1);
 
