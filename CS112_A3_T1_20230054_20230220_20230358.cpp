@@ -178,8 +178,8 @@ void Merge_Images(){
         for (int j = 0; j < photo_result.height; ++j) {
             for (int k = 0; k < 3; ++k) {
                 int avrg = 0;
-                // avrg = (photo11(i,j,k) + photo22(i,j,k))/2;
-                photo_result(i, j, k) +=avrg;
+                avrg = (photo11(i,j,k) + photo22(i,j,k))/2;
+                photo_result(i, j, k) = avrg;
             }
         }
     }
