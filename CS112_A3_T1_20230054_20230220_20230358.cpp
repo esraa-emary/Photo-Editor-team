@@ -168,17 +168,39 @@ void Merge_Images(){
     photo2 = load(photo2);
     Image photo22(photo2);
 
-    int new_width = min(photo11.width, photo22.width);
-    int new_height = min(photo11.height, photo22.height);
-    photo1.resize(new_width, new_height);
-    photo2.resize(new_width, new_height);
+    int width = min(photo11.width, photo22.width);
+    int height = min(photo11.height, photo22.height);
+    int max_width = max(photo11.width, photo22.width);
+    int max_height = max(photo11.height, photo22.height);
+
+    float ratio_w = max_width/(float) width;
+    float ratio_h = max_height/(float) height;
+
     Image photo_result(photo11.width, photo11.height);
+
+    Image photo1_sized(width, height);
+    for (int x = 0; x < width; x++) {
+        for (int y = 0; y < height; y++) {
+            for (int z = 0; z < 3; z++) {
+                photo1_sized(x, y, z) = photo11(x*(photo11.width/(float) width), y*(photo11.height/(float) height), z);
+            }
+        }
+    }
+
+    Image photo2_sized(width, height);
+    for (int x = 0; x < width; x++) {
+        for (int y = 0; y < height; y++) {
+            for (int z = 0; z < 3; z++) {
+                photo2_sized(x, y, z) = photo22(x*(photo22.width/(float) width), y*(photo22.height/(float) height), z);
+            }
+        }
+    }
 
     for (int i = 0; i < photo_result.width; ++i) {
         for (int j = 0; j < photo_result.height; ++j) {
             for (int k = 0; k < 3; ++k) {
                 int avrg = 0;
-                avrg = (photo11(i,j,k) + photo22(i,j,k))/2;
+                avrg = (photo1_sized(i,j,k) + photo2_sized(i,j,k))/2;
                 photo_result(i, j, k) = avrg;
             }
         }
