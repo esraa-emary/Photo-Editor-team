@@ -11,7 +11,7 @@ Version: 1.0
 //========================================================================================================================================//
 #include <iostream>
 #include <bits/stdc++.h>
-#include "Image_Class.h"
+#include "Image_class\Image_Class.h"
 using namespace std;
 
 // Save the effect in a new photo or the same one.
@@ -177,47 +177,39 @@ void Darken_and_Lighten(){
 
 // Filter 3 (Merge Images).
 void Merge_Images(){
+    string image1_name , image2_name;
     cout << "\n----------------------------------------------------------------------" << endl << endl;
-    string photo1;                                                               // Get the first photo and make it as an image.
-    cout << "- Please enter the first file name\n-->";
-    getline(cin, photo1);
-    photo1 = load(photo1);
-    Image photo11(photo1);
-
-    string photo2;                                                               // Get the second photo and make it as an image.
+    cout << "- Please enter the file name\n-->";
+    cin.ignore();
+    getline(cin,image1_name);
+    image1_name = load(image1_name);
     cout << "- Please enter the second file name\n-->";
-    getline(cin, photo2);
-    photo2 = load(photo2);
-    Image photo22(photo2);
-
-    int width = min(photo11.width, photo22.width);                               // Make new variables that are equal to the minimun width and height.
-    int height = min(photo11.height, photo22.height);
-    Image photo_result(photo11.width, photo11.height);
-
-    Image photo1_sized(width, height);                                           // Change the dimensions of the first photo.
-    for (int x = 0; x < width; x++) {
-        for (int y = 0; y < height; y++) {
-            for (int z = 0; z < 3; z++) {                                        //  Resizing the first photo.
-                photo1_sized(x, y, z) = photo11(x*(photo11.width/(float) width), y*(photo11.height/(float) height), z);
-            }
+    getline(cin,image2_name);
+     image2_name = load(image2_name);
+Image photo1(image1_name), photo2(image2_name),photo3(2500,1500),photo4(2500,1500);//photo3 makes changed to make it as photo1 but in size(2500,1500)
+                                                                                  ////photo4 makes changed to make it as photo2 but in size(2500,1500)
+   //try to make photo1 and photo2 with same dimensions(2500,1500) 
+   float step_width1 = photo1.width/2500.0;
+   float step_height1 = photo1.height/1500.0;
+   float step_width2 = photo2.width/2500.0;
+   float step_height2=photo2.height/1500.0;
+   for(int i =0 ;i<2500;i++){
+    for(int j=0;j<1500;j++){
+        for(int k=0;k<3;k++){
+            photo3(i,j,k)=photo1((i*step_width1),(j*step_height1),k);
+            photo4(i,j,k)=photo2(i*step_width2,j*step_height2,k);
         }
     }
+   }
+    //Now photo3 is photo1 with dimensions(2500,1500)  , photo4 is photo2 with dimenions(2500,1500)
+     Image photo_result(2500,1500); //merge after make two photos with same width (2500) and same height(1500) 
+  for(int i = 0,x=1; i < 2500; i+=2,x+=2) {
+        for(int j = 0,y=1; j < 1500; j+=2,y+=2) {
+            for(int k = 0; k < 3; k++) {
+                // Calculate the average of corresponding pixel values from two images
+                photo_result(i, j, k) = photo3(i, j, k);
+                 photo_result(x, y, k) = photo4(x, y, k);
 
-    Image photo2_sized(width, height);                                           // Change the dimensions of the second photo.
-    for (int x = 0; x < width; x++) {
-        for (int y = 0; y < height; y++) {
-            for (int z = 0; z < 3; z++) {                                        //  Resizing the second photo.
-                photo2_sized(x, y, z) = photo22(x*(photo22.width/(float) width), y*(photo22.height/(float) height), z);
-            }
-        }
-    }
-                              
-    for (int i = 0; i < photo_result.width; ++i) {                              // Make a new image that contain the two photos.  
-        for (int j = 0; j < photo_result.height; ++j) {
-            for (int k = 0; k < 3; ++k) {
-                int avrg = 0;
-                avrg = (photo1_sized(i,j,k) + photo2_sized(i,j,k))/2;
-                photo_result(i, j, k) = avrg;
             }
         }
     }
