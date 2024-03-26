@@ -3,9 +3,9 @@ File name: CS112_A3_T1_20230054_20230220_20230358.cpp
 Purpose: Make an application that takes a photo and apply a filter to it.
 Version: 1.0
 
----> Author 1: Esraa Emary Abd Elsalam.          ID: 20230054
----> Author 2: Abdelrahman Yasser Ali.           ID: 20230220
----> Author 2: Mohamed Nabil Elsaied Ali.        ID: 20230358
+--->  Author 1: Esraa Emary Abd Elsalam.          ID: 20230054
+--->  Author 2: Abdelrahman Yasser Ali.           ID: 20230220
+--->  Author 2: Mohamed Nabil Elsaied Ali.        ID: 20230358
 
 */
 //========================================================================================================================================//
@@ -25,13 +25,13 @@ void how_to_save(Image image, string photo){
         // Save the effect in a new photo.
         if(choice == "1"){
             string new_name;
-            cout << "- Please enter the new file name\n-->";
+            cout << "- Please enter the new file name\n--> ";
             getline(cin, new_name);
 
             // Check the validity of the new file name.
             while((new_name.substr(new_name.size() - 4 , 4) != "jpeg") && (new_name.substr(new_name.size() - 3 , 3) != "jpg") && (new_name.substr(new_name.size() - 3 , 3) != "png") && (new_name.substr(new_name.size() - 3 , 3) != "bmp")){
                 cout << "\n----------------------------------------------------------------------" << endl << endl;
-                cout << "- Please enter a valid new file name\n-->";
+                cout << "- Please enter a valid new file name\n--> ";
                 getline(cin, new_name);
             }
             image.saveImage(new_name);
@@ -59,13 +59,13 @@ void how_to_save(Image image, string photo){
 // Save the effect in a new photo only.
 void how_to_save2(Image image){
     string new_name;
-    cout << "- Please enter the new file name\n-->";
+    cout << "- Please enter the new file name\n--> ";
     getline(cin, new_name);
 
     // Check the validity of the new file name.
     while((new_name.substr(new_name.size() - 4 , 4) != "jpeg") && (new_name.substr(new_name.size() - 3 , 3) != "jpg") && (new_name.substr(new_name.size() - 3 , 3) != "png") && (new_name.substr(new_name.size() - 3 , 3) != "bmp")){
         cout << "\n----------------------------------------------------------------------" << endl << endl;
-        cout << "- Please enter a valid new file name\n-->";
+        cout << "- Please enter a valid new file name\n--> ";
         getline(cin, new_name);
     }
     image.saveImage(new_name);
@@ -96,7 +96,7 @@ string load(string name){
 void Grayscale_Conversion(){
     cout << "\n----------------------------------------------------------------------" << endl << endl;
     string photo;                                                                   // Get the photo and make it as an image.
-    cout << "- Please enter the file name\n-->";
+    cout << "- Please enter the file name\n--> ";
     getline(cin, photo);
     photo = load(photo);
     Image image(photo);
@@ -128,7 +128,7 @@ void Darken_and_Lighten(){
         if (choice2 ==  "1"){
             cout << "\n----------------------------------------------------------------------" << endl << endl;
             string photo;                                                         // Get the photo and make it as an image.
-            cout << "- Please enter the file name\n-->";
+            cout << "- Please enter the file name\n--> ";
             getline(cin, photo);
             photo = load(photo);
             Image image(photo);
@@ -148,15 +148,19 @@ void Darken_and_Lighten(){
         else if(choice2 == "2"){
             cout << "\n----------------------------------------------------------------------" << endl << endl;
             string photo;                                                         // Get the photo and make it as an image.
-            cout << "- Please enter the file name\n-->";
+            cout << "- Please enter the file name\n--> ";
             getline(cin, photo);
             photo = load(photo);
             Image image(photo);
-            float lighten = 1.125;                                                // Initialize lighten value.
+            float lighten = 1.5;                                                // Initialize lighten value.
             for (int i = 0; i < image.width; ++i) {
                 for (int j = 0; j < image.height; ++j) {
                     for (int k = 0; k < 3; ++k) {
-                        image(i, j, k) *= lighten;                                // Change pixel values.
+                        int val = image(i, j, k) * lighten;                     // Change pixel values.
+                        if (val > 255)      // Check if channel value exceeds 255 
+                            (image(i, j, k) = 255);
+                        else
+                            image(i, j, k) = val;
                     }
                 }
             }
@@ -177,39 +181,45 @@ void Darken_and_Lighten(){
 
 // Filter 3 (Merge Images).
 void Merge_Images(){
-    string image1_name , image2_name;
-    cout << "\n----------------------------------------------------------------------" << endl << endl;
-    cout << "- Please enter the file name\n-->";
-    cin.ignore();
-    getline(cin,image1_name);
-    image1_name = load(image1_name);
-    cout << "- Please enter the second file name\n-->";
-    getline(cin,image2_name);
-     image2_name = load(image2_name);
-Image photo1(image1_name), photo2(image2_name),photo3(2500,1500),photo4(2500,1500);//photo3 makes changed to make it as photo1 but in size(2500,1500)
-                                                                                  ////photo4 makes changed to make it as photo2 but in size(2500,1500)
-   //try to make photo1 and photo2 with same dimensions(2500,1500) 
-   float step_width1 = photo1.width/2500.0;
-   float step_height1 = photo1.height/1500.0;
-   float step_width2 = photo2.width/2500.0;
-   float step_height2=photo2.height/1500.0;
-   for(int i =0 ;i<2500;i++){
-    for(int j=0;j<1500;j++){
-        for(int k=0;k<3;k++){
-            photo3(i,j,k)=photo1((i*step_width1),(j*step_height1),k);
-            photo4(i,j,k)=photo2(i*step_width2,j*step_height2,k);
+    // Load photo 1
+    string photo1;
+    cout << "- Please enter the first file name\n--> ";
+    getline(cin, photo1);
+    photo1 = load(photo1);
+    Image photo11(photo1);
+
+    // Load photo 2
+    string photo2;
+    cout << "- Please enter the second file name\n--> ";
+    getline(cin, photo2);
+    photo2 = load(photo2);
+    Image photo22(photo2);
+
+    // Declare minimum width and minimum height to unify dimensions for both photos
+    int width = min(photo11.width, photo22.width);
+    int height = min(photo11.height, photo22.height);
+
+    Image photo_result(width, height);  // Create the new photo
+
+    Image photo1_sized(width, height);
+    Image photo2_sized(width, height);
+    for (int x = 0; x < width; x++) {
+        for (int y = 0; y < height; y++) {
+            for (int z = 0; z < 3; z++) {
+                // Resize the new photos by discarding unneeded pixels based on the ratio between dimensions
+                photo1_sized(x, y, z) = photo11(x*(photo11.width/(float) width), y*(photo11.height/(float) height), z); // Resize photo 1
+                photo2_sized(x, y, z) = photo22(x*(photo22.width/(float) width), y*(photo22.height/(float) height), z); // Resize photo 2
+            }
         }
     }
-   }
-    //Now photo3 is photo1 with dimensions(2500,1500)  , photo4 is photo2 with dimenions(2500,1500)
-     Image photo_result(2500,1500); //merge after make two photos with same width (2500) and same height(1500) 
-  for(int i = 0,x=1; i < 2500; i+=2,x+=2) {
-        for(int j = 0,y=1; j < 1500; j+=2,y+=2) {
-            for(int k = 0; k < 3; k++) {
-                // Calculate the average of corresponding pixel values from two images
-                photo_result(i, j, k) = photo3(i, j, k);
-                 photo_result(x, y, k) = photo4(x, y, k);
 
+    // Applying merge
+    for (int i = 0; i < photo_result.width; ++i) {
+        for (int j = 0; j < photo_result.height; ++j) {
+            for (int k = 0; k < 3; ++k) {
+                int avrg = 0;
+                avrg = (photo1_sized(i,j,k) + photo2_sized(i,j,k))/2;
+                photo_result(i, j, k) = avrg;
             }
         }
     }
@@ -220,7 +230,7 @@ Image photo1(image1_name), photo2(image2_name),photo3(2500,1500),photo4(2500,150
 void Invert_Image(){
     cout << "\n----------------------------------------------------------------------" << endl << endl;
     string photo_name;                                                           // Get the photo and make it as an image.
-    cout << "- Please enter the file name\n-->";
+    cout << "- Please enter the file name\n--> ";
     getline(cin, photo_name);
     photo_name = load(photo_name);
     Image image(photo_name);
@@ -247,7 +257,7 @@ void Rotate_Image(){
         if (choice2 ==  "1"){
             cout << "\n----------------------------------------------------------------------" << endl << endl;
             string photo;                                                       // Get the photo and make it as an image.
-            cout << "- Please enter the file name\n-->";
+            cout << "- Please enter the file name\n--> ";
             getline(cin, photo);
             photo = load(photo);
             Image image(photo);
@@ -272,7 +282,7 @@ void Rotate_Image(){
         else if(choice2 == "2"){
             cout << "\n----------------------------------------------------------------------" << endl << endl;
             string photo;                                                       // Get the photo and make it as an image.
-            cout << "- Please enter the file name\n-->";
+            cout << "- Please enter the file name\n--> ";
             getline(cin, photo);
             photo = load(photo);
             Image image(photo);
@@ -299,7 +309,7 @@ void Rotate_Image(){
         else if(choice2 == "3"){
             cout << "\n----------------------------------------------------------------------" << endl << endl;
             string photo;                                                       // Get the photo and make it as an image.
-            cout << "- Please enter the file name\n-->";
+            cout << "- Please enter the file name\n--> ";
             getline(cin, photo);
             photo = load(photo);
             Image image(photo);
