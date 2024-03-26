@@ -14,7 +14,6 @@ Version: 1.0
 #include "Image_Class.h"
 using namespace std;
 
-
 // Save the effect in a new photo or the same one.
 void how_to_save(Image image, string photo){
     cout << "Do you want to save the effect in a new photo or replace the base ?\n[1] New photo.\n[2] Replace the base.\nChoice: ";
@@ -28,6 +27,13 @@ void how_to_save(Image image, string photo){
             string new_name;
             cout << "- Please enter the new file name\n-->";
             getline(cin, new_name);
+
+            // Check the validity of the new file name.
+            while((new_name.substr(new_name.size() - 4 , 4) != "jpeg") && (new_name.substr(new_name.size() - 3 , 3) != "jpg") && (new_name.substr(new_name.size() - 3 , 3) != "png") && (new_name.substr(new_name.size() - 3 , 3) != "bmp")){
+                cout << "\n----------------------------------------------------------------------" << endl << endl;
+                cout << "- Please enter a valid new file name\n-->";
+                getline(cin, new_name);
+            }
             image.saveImage(new_name);
             cout << "\n----------------------------------------------------------------------" << endl << endl;
             cout << "- Photo has been saved successfully" << endl;
@@ -55,6 +61,13 @@ void how_to_save2(Image image){
     string new_name;
     cout << "- Please enter the new file name\n-->";
     getline(cin, new_name);
+
+    // Check the validity of the new file name.
+    while((new_name.substr(new_name.size() - 4 , 4) != "jpeg") && (new_name.substr(new_name.size() - 3 , 3) != "jpg") && (new_name.substr(new_name.size() - 3 , 3) != "png") && (new_name.substr(new_name.size() - 3 , 3) != "bmp")){
+        cout << "\n----------------------------------------------------------------------" << endl << endl;
+        cout << "- Please enter a valid new file name\n-->";
+        getline(cin, new_name);
+    }
     image.saveImage(new_name);
     cout << "\n----------------------------------------------------------------------" << endl << endl;
     cout << "- Photo has been saved successfully" << endl;
@@ -66,7 +79,7 @@ string load(string name){
         cout << endl;
         try {
         Image image(name);
-        cout << "\n----------------------------------------------------------------------" << endl << endl;
+        cout << "----------------------------------------------------------------------" << endl << endl;
         cout << "- Photo Loaded Successfuly.\n";
         cout << "\n----------------------------------------------------------------------" << endl << endl;
         return name;
@@ -171,7 +184,6 @@ void Merge_Images(){
     photo1 = load(photo1);
     Image photo11(photo1);
 
-    cout << "\n----------------------------------------------------------------------" << endl << endl;
     string photo2;                                                               // Get the second photo and make it as an image.
     cout << "- Please enter the second file name\n-->";
     getline(cin, photo2);
@@ -392,6 +404,7 @@ void Flip() {
                 }
             }
             how_to_save(image, photo_name);
+            break;
         }
 
         // Flip vertically
@@ -416,6 +429,7 @@ void Flip() {
                 }
             }
             how_to_save(image, photo_name);
+            break;
         }
 
         // Back to the main menu.
@@ -523,28 +537,8 @@ int main(){
             cout << "Please enter a valid choice." << endl;   
             continue;
         }
-
-        // Continue or exit.
-        string choice3;
-        while (true)
-        {
-            cout << "\n----------------------------------------------------------------------" << endl << endl;
-            cout << "Do you want to continue in our application ?\n[1] YES.\n[2] NO.\nChoice: ";
-            getline(cin, choice3);
-            if(choice3 == "1")
-                break;
-            else if(choice3 == "2")
-                break;
-            else{
-                cout << "Please enter a valid choice." << endl;   
-                continue;
-            }
-        }
-        if(choice3 == "2")
-                break;
     }
-
     cout << "\n----------------------------------------------------------------------" << endl << endl;
-    cout << "\n#===== Thanks for using our application =====#" << endl;
+    cout << "#===== Thanks for using our application =====#" << endl;
     return 0;
 }
