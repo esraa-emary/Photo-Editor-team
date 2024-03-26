@@ -171,6 +171,7 @@ void Merge_Images(){
     int width = min(photo11.width, photo22.width);
     int height = min(photo11.height, photo22.height);
 
+
     Image photo_result(photo11.width, photo11.height);
 
     Image photo1_sized(width, height);
@@ -379,6 +380,7 @@ void Flip() {
 
                 }
             }
+            how_to_save(image, photo_name);
         }
 
         // Flip vertically
@@ -395,11 +397,13 @@ void Flip() {
 
                 }
             }
+            how_to_save(image, photo_name);
         }
 
-        else
+        else if (choice == "3")
             break;
-    how_to_save(image, photo_name);
+        else 
+            cout << "Please enter a valid choice: ";
     }
 }
 
@@ -506,6 +510,7 @@ int main(){
             continue;
         }
 
+        bool exit = 0;
         // Continue or exit.
         while (true)
         {
@@ -513,15 +518,19 @@ int main(){
             cout << "Do you want to continue in our application ?\n[1] YES.\n[2] NO.\nChoice: ";
             string choice3;
             getline(cin, choice3);
-            if(choice3 == "1")
-                continue;
-            else if(choice3 == "2")
+            if (choice3 == "1") 
                 break;
-            else{
+            else if (choice3 == "2") {
+                exit = 1;
+                break;
+            }
+            else {
                 cout << "Please enter a valid choice." << endl;   
                 continue;
             }
         }
+        if (exit)
+            break;
     }
 
     cout << "\n#===== Thanks for using our application =====#" << endl;
