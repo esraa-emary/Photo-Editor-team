@@ -170,11 +170,6 @@ void Merge_Images(){
 
     int width = min(photo11.width, photo22.width);
     int height = min(photo11.height, photo22.height);
-    int max_width = max(photo11.width, photo22.width);
-    int max_height = max(photo11.height, photo22.height);
-
-    float ratio_w = max_width/(float) width;
-    float ratio_h = max_height/(float) height;
 
     Image photo_result(photo11.width, photo11.height);
 
