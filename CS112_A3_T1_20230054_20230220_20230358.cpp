@@ -11,7 +11,7 @@ Version: 1.0
 //========================================================================================================================================//
 #include <iostream>
 #include <bits/stdc++.h>
-#include "Image_Class/Image_Class.h"
+#include "Image_Class.h"
 using namespace std;
 
 
@@ -29,14 +29,16 @@ void how_to_save(Image image, string photo){
             cout << "- Please enter the new file name\n-->";
             getline(cin, new_name);
             image.saveImage(new_name);
-            cout << "- Photo has been saved successfully";
+            cout << "\n----------------------------------------------------------------------" << endl << endl;
+            cout << "- Photo has been saved successfully" << endl;
             break;
         }
         
         // Save the effect in the same photo.
         else if(choice == "2"){
             image.saveImage(photo);
-            cout << "- Photo has been saved successfully";
+            cout << "\n----------------------------------------------------------------------" << endl << endl;
+            cout << "- Photo has been saved successfully" << endl;
             break;
         }
         
@@ -54,7 +56,8 @@ void how_to_save2(Image image){
     cout << "- Please enter the new file name\n-->";
     getline(cin, new_name);
     image.saveImage(new_name);
-    cout << "- Photo has been saved successfully";
+    cout << "\n----------------------------------------------------------------------" << endl << endl;
+    cout << "- Photo has been saved successfully" << endl;
 }
 
 // Get the image from the user to apply the filter.
@@ -63,7 +66,9 @@ string load(string name){
         cout << endl;
         try {
         Image image(name);
-        cout << "- Photo Loaded Successfuly!\n" << endl;
+        cout << "\n----------------------------------------------------------------------" << endl << endl;
+        cout << "- Photo Loaded Successfuly.\n";
+        cout << "\n----------------------------------------------------------------------" << endl << endl;
         return name;
         }
         catch (invalid_argument) {
@@ -74,21 +79,22 @@ string load(string name){
 }
 //================================================================ Main Functions =============================================================//
 
-// Filter1 (Grayscale Conversion).
+// Filter 1 (Grayscale Conversion).
 void Grayscale_Conversion(){
-    string photo;
+    cout << "\n----------------------------------------------------------------------" << endl << endl;
+    string photo;                                                                   // Get the photo and make it as an image.
     cout << "- Please enter the file name\n-->";
     getline(cin, photo);
     photo = load(photo);
     Image image(photo);
     for (int i = 0; i < image.width; ++i) {
         for (int j = 0; j < image.height; ++j) {
-            unsigned  int avg = 0; 
+            unsigned  int avg = 0;                                                  // Initialize average value.
             for (int k = 0; k < 3; ++k) {
-                avg += image(i, j, k); 
+                avg += image(i, j, k);                                              // Accumulate pixel values.
             }
-            avg /= 3;
-            image(i, j, 0) = avg;
+            avg /= 3;                                                               // Calculate average.
+            image(i, j, 0) = avg;                                                   // Set all channels to the average value.
             image(i, j, 1) = avg;
             image(i, j, 2) = avg;
         }
@@ -96,7 +102,7 @@ void Grayscale_Conversion(){
     how_to_save(image,photo);
 }
 
-// Filter2 (Darken and Lighten Image).
+// Filter 2 (Darken and Lighten Image).
 void Darken_and_Lighten(){
     while (true)
     {
@@ -107,16 +113,17 @@ void Darken_and_Lighten(){
 
         // Darken The Image.
         if (choice2 ==  "1"){
-            string photo;
+            cout << "\n----------------------------------------------------------------------" << endl << endl;
+            string photo;                                                         // Get the photo and make it as an image.
             cout << "- Please enter the file name\n-->";
             getline(cin, photo);
             photo = load(photo);
             Image image(photo);
-            float darken = 0.5;
+            float darken = 0.5;                                                   // Initialize darken value.
             for (int i = 0; i < image.width; ++i) {
                 for (int j = 0; j < image.height; ++j) {
                     for (int k = 0; k < 3; ++k) {
-                        image(i, j, k) *= darken; 
+                        image(i, j, k) *= darken;                                 // Change pixel values.
                     }
                 }
             }
@@ -126,16 +133,17 @@ void Darken_and_Lighten(){
 
         // Lighten The Image.
         else if(choice2 == "2"){
-            string photo;
+            cout << "\n----------------------------------------------------------------------" << endl << endl;
+            string photo;                                                         // Get the photo and make it as an image.
             cout << "- Please enter the file name\n-->";
             getline(cin, photo);
             photo = load(photo);
             Image image(photo);
-            float lighten = 1.125;
+            float lighten = 1.125;                                                // Initialize lighten value.
             for (int i = 0; i < image.width; ++i) {
                 for (int j = 0; j < image.height; ++j) {
                     for (int k = 0; k < 3; ++k) {
-                        image(i, j, k) *= lighten;
+                        image(i, j, k) *= lighten;                                // Change pixel values.
                     }
                 }
             }
@@ -154,45 +162,45 @@ void Darken_and_Lighten(){
     }
 }
 
-// Filter3 (Merge Images).
+// Filter 3 (Merge Images).
 void Merge_Images(){
-    string photo1;
+    cout << "\n----------------------------------------------------------------------" << endl << endl;
+    string photo1;                                                               // Get the first photo and make it as an image.
     cout << "- Please enter the first file name\n-->";
     getline(cin, photo1);
     photo1 = load(photo1);
     Image photo11(photo1);
 
-    string photo2;
+    cout << "\n----------------------------------------------------------------------" << endl << endl;
+    string photo2;                                                               // Get the second photo and make it as an image.
     cout << "- Please enter the second file name\n-->";
     getline(cin, photo2);
     photo2 = load(photo2);
     Image photo22(photo2);
 
-    int width = min(photo11.width, photo22.width);
+    int width = min(photo11.width, photo22.width);                               // Make new variables that are equal to the minimun width and height.
     int height = min(photo11.height, photo22.height);
-
-
     Image photo_result(photo11.width, photo11.height);
 
-    Image photo1_sized(width, height);
+    Image photo1_sized(width, height);                                           // Change the dimensions of the first photo.
     for (int x = 0; x < width; x++) {
         for (int y = 0; y < height; y++) {
-            for (int z = 0; z < 3; z++) {
+            for (int z = 0; z < 3; z++) {                                        //  Resizing the first photo.
                 photo1_sized(x, y, z) = photo11(x*(photo11.width/(float) width), y*(photo11.height/(float) height), z);
             }
         }
     }
 
-    Image photo2_sized(width, height);
+    Image photo2_sized(width, height);                                           // Change the dimensions of the second photo.
     for (int x = 0; x < width; x++) {
         for (int y = 0; y < height; y++) {
-            for (int z = 0; z < 3; z++) {
+            for (int z = 0; z < 3; z++) {                                        //  Resizing the second photo.
                 photo2_sized(x, y, z) = photo22(x*(photo22.width/(float) width), y*(photo22.height/(float) height), z);
             }
         }
     }
-
-    for (int i = 0; i < photo_result.width; ++i) {
+                              
+    for (int i = 0; i < photo_result.width; ++i) {                              // Make a new image that contain the two photos.  
         for (int j = 0; j < photo_result.height; ++j) {
             for (int k = 0; k < 3; ++k) {
                 int avrg = 0;
@@ -204,9 +212,10 @@ void Merge_Images(){
     how_to_save2(photo_result);
 }
 
-// Filter4 (Invert Image).
+// Filter 4 (Invert Image).
 void Invert_Image(){
-    string photo_name;
+    cout << "\n----------------------------------------------------------------------" << endl << endl;
+    string photo_name;                                                           // Get the photo and make it as an image.
     cout << "- Please enter the file name\n-->";
     getline(cin, photo_name);
     photo_name = load(photo_name);
@@ -214,14 +223,14 @@ void Invert_Image(){
     for(int i=0; i<image.width; i++){
         for(int j=0; j<image.height; j++){
             for(int k=0; k<3; k++){
-                image(i,j,k)= 255 - image(i,j,k);
+                image(i,j,k) = 255 - image(i,j,k);                               // Change pixel values.
             }
         }  
     }
     how_to_save(image,photo_name);
 }
 
-// Filter5 (Rotate Image).
+// Filter 5 (Rotate Image).
 void Rotate_Image(){
     while (true)
     {
@@ -232,20 +241,22 @@ void Rotate_Image(){
 
         // Rotate 90°.
         if (choice2 ==  "1"){
-            string photo;
-            int width,height;
+            cout << "\n----------------------------------------------------------------------" << endl << endl;
+            string photo;                                                       // Get the photo and make it as an image.
             cout << "- Please enter the file name\n-->";
             getline(cin, photo);
             photo = load(photo);
             Image image(photo);
-             width = image.width;
+
+            int width,height;                                                   // Initialize values of width and height.                                 
+            width = image.width;
             height = image.height;
-            Image rotate(height,width);
-            cout<<rotate.width<<" "<<image.height<<endl;   
+
+            Image rotate(height,width);                                         // Make new image rotate that have swaped dimensions of the image.
             for(int x=1;x<image.width;x++){
                 for(int y=1; y<image.height;y++){
                     for(int z=0; z<3;z++){
-                        rotate(y ,x ,z) = image(x, image.height - y, z);
+                        rotate(y ,x ,z) = image(x, image.height - y, z);        // Change pixel values.
                     }
                 }
             }
@@ -255,43 +266,49 @@ void Rotate_Image(){
 
         // Rotate 180°.
         else if(choice2 == "2"){
-            string photo;
-            int width,height;
+            cout << "\n----------------------------------------------------------------------" << endl << endl;
+            string photo;                                                       // Get the photo and make it as an image.
             cout << "- Please enter the file name\n-->";
             getline(cin, photo);
             photo = load(photo);
             Image image(photo);
-             width = image.width;
+
+            int width,height;                                                   // Initialize values of width and height.    
+            width = image.width;
             height = image.height;
-            Image rotate(height,width);
-            Image rotate180(width,height);
-            for(int x=1;x<width;x++){
+
+            Image rotate (height,width);                                        // Make new image rotate that have swaped dimensions of the image.
+            Image rotate180 (width,height);                                     // Make new image rotate180 that have same dimensions of the image.
+            for(int x = 1;x < width;x++){
                 for(int y=1; y<height;y++){
                     for(int z=0; z<3;z++){
-                        rotate180(x, y, z) = image(width - x,height - y, z);
+                        rotate180(x, y, z) = image(width - x,height - y, z);    // Change pixel values.
                     }
                 }
             }
-            rotate=rotate180;
+            rotate = rotate180;
             how_to_save(rotate, photo);
             break;
         }
 
         // Rotate 270°.
         else if(choice2 == "3"){
-            string photo;
-            int width,height;
+            cout << "\n----------------------------------------------------------------------" << endl << endl;
+            string photo;                                                       // Get the photo and make it as an image.
             cout << "- Please enter the file name\n-->";
             getline(cin, photo);
             photo = load(photo);
             Image image(photo);
-             width = image.width;
+
+            int width,height;                                                   // Initialize values of width and height.    
+            width = image.width;
             height = image.height;
-            Image rotate(height,width);
-            for(int x=0;x<rotate.width;x++){
-                for(int y=0; y<rotate.height;y++){
-                    for(int z=0; z<3;z++){
-                        rotate(x,y,z)=image(rotate.height - y, x, z);
+
+            Image rotate(height,width);                                         // Make new image rotate that have swaped dimensions of the image.
+            for(int x = 0 ; x < rotate.width ; x++){
+                for(int y = 0 ; y < rotate.height ; y++){
+                    for(int z = 0 ; z < 3 ; z++){
+                        rotate(x,y,z)=image(rotate.height - y, x, z);           // Change pixel values.
                     }
                 }
             }
@@ -310,11 +327,10 @@ void Rotate_Image(){
     }
 }
 
-
-// Filter 6 (Black and White)
+// Filter 6 (Black and White).
 void Black_n_White() {
-    cout << "\n----------------------------------------------------------------------\n\n";
-    string photo_name;
+    cout << "\n----------------------------------------------------------------------" << endl << endl;
+    string photo_name;                                                          // Get the photo and make it as an image.
     cout << "Please enter the photo name: ";
     getline(cin, photo_name);
     photo_name = load(photo_name);
@@ -322,13 +338,11 @@ void Black_n_White() {
 
     for (int i = 0; i < image.width; i++) {
         for (int j = 0; j < image.height; j++) {
-            unsigned  int avg = 0;
-
+            unsigned  int avg = 0;                                              // Initialize average value.
             for (int k = 0; k < 3; k++) {
-                avg += image(i, j, k);
+                avg += image(i, j, k);                                          // Accumulate pixel values.
             }
-
-            avg /= 3; // Calculate average
+            avg /= 3;                                                           // Calculate average.
             int val;
             if (avg > 127) {
                 val = 255;
@@ -345,37 +359,34 @@ void Black_n_White() {
     how_to_save(image, photo_name);
 }
 
-// Filter 7 (Flip)
+// Filter 7 (Flip).
 void Flip() {
     while (true) {
-        cout << "\n----------------------------------------------------------------------\n\n";
-        cout << "Do you want to flip horizontally or vertically ?\n"
-             << "[1] Horizontally\n"
-             << "[2] Vertically\n"
-             << "[3] Back.\n"
-             << "Choice: ";
+        cout << "\n----------------------------------------------------------------------" << endl << endl;
+        cout << "Do you want to flip horizontally or vertically ?\n"<< "[1] Horizontally\n"
+            << "[2] Vertically\n"<< "[3] Back.\n"<< "Choice: ";
         string choice;
         getline(cin, choice);
 
-        string photo_name;
-        cout << "Please enter the photo name: ";
-        getline(cin, photo_name);
-        photo_name = load(photo_name);
-        Image image(photo_name);
-
-        int width = image.width;
-        int height = image.height;
-
         // Flip horizontally
         if (choice == "1") {
-            for (int i = 0; i < width/2; i++) {     // Loop until reaching half of the image width
+            cout << "\n----------------------------------------------------------------------" << endl << endl;
+            string photo_name;                                                  // Get the photo and make it as an image.
+            cout << "Please enter the photo name: ";
+            getline(cin, photo_name);
+            photo_name = load(photo_name);
+            Image image(photo_name);
+            int width = image.width;
+            int height = image.height;
+
+            for (int i = 0; i < width/2; i++) {                                 // Loop until reaching half of the image width
                 for (int j = 0; j < height; j++) {
                     int temp;
 
                     for (int k = 0; k < 3; k++) {
-                        temp = image(i, j, k);      // Temp variable to store the pixel before swapping
-                        image(i, j, k) = image(width - 1 - i, j, k);    // Swap the pixel with each opposite one (horizontally)
-                        image(width - 1 - i, j, k) = temp;  // Assign the old value to the opposite pixel
+                        temp = image(i, j, k);                                  // Temp variable to store the pixel before swapping
+                        image(i, j, k) = image(width - 1 - i, j, k);            // Swap the pixel with each opposite one (horizontally)
+                        image(width - 1 - i, j, k) = temp;                      // Assign the old value to the opposite pixel
                     }
 
                 }
@@ -385,28 +396,37 @@ void Flip() {
 
         // Flip vertically
         else if (choice == "2") {
-            for (int i = 0; i < width; i++) {
-                for (int j = 0; j < height/2; j++) {    // Loop until reaching half of the image width
-                    int temp;
+            cout << "\n----------------------------------------------------------------------" << endl << endl;
+            string photo_name;                                                  // Get the photo and make it as an image.
+            cout << "Please enter the photo name: ";
+            getline(cin, photo_name);
+            photo_name = load(photo_name);
+            Image image(photo_name);
+            int width = image.width;
+            int height = image.height;
 
+            for (int i = 0; i < width; i++) {
+                for (int j = 0; j < height/2; j++) {                            // Loop until reaching half of the image width
+                    int temp;
                     for (int k = 0; k < 3; k++) {
-                        temp = image(i, j, k);          // Temp variable to store the pixel before swapping
-                        image(i, j, k) = image(i, height - 1 - j, k);   // Swap the pixel with each opposite one (vertically)
+                        temp = image(i, j, k);                                  // Temp variable to store the pixel before swapping
+                        image(i, j, k) = image(i, height - 1 - j, k);           // Swap the pixel with each opposite one (vertically)
                         image(i, height - 1 - j, k) = temp;
                     }
-
                 }
             }
             how_to_save(image, photo_name);
         }
 
-        else if (choice == "3")
+        // Back to the main menu.
+        else if (choice == "3") 
             break;
-        else 
-            cout << "Please enter a valid choice: ";
+        else{
+            cout << "Please enter a valid choice." << endl;   
+            continue;
+        }
     }
 }
-
 
 //================================================================= Main Program ==============================================================//
 
@@ -428,16 +448,9 @@ int main(){
         if(choice == "1"){
             while (true){
                 cout << "\n----------------------------------------------------------------------" << endl << endl;
-                cout << "What filter do you want to apply ?\n"
-                     << "[1] Grayscale Conversion.\n"
-                     << "[2] Darken and Lighten Image.\n"
-                     << "[3] Merge Images.\n"
-                     << "[4] Invert Image.\n"
-                     << "[5] Rotate Image.\n"
-                     << "[6] Black and White.\n"
-                     << "[7] Flip.\n"
-                     << "[8] Back.\n"
-                     << "Choice: ";
+                cout << "What filter do you want to apply ?\n"<< "[1] Grayscale Conversion.\n"<< "[2] Darken and Lighten Image.\n"
+                    << "[3] Merge Images.\n"<< "[4] Invert Image.\n"<< "[5] Rotate Image.\n"<< "[6] Black and White.\n"
+                    << "[7] Flip.\n"<< "[8] Back.\n"<< "Choice: ";
                 string choice1;
                 getline(cin, choice1);
 
@@ -487,6 +500,7 @@ int main(){
                 else if (choice1 == "7")
                 {
                     Flip();
+                    break;
                 }
 
                 // Back to the main menu.
@@ -510,29 +524,27 @@ int main(){
             continue;
         }
 
-        bool exit = 0;
         // Continue or exit.
+        string choice3;
         while (true)
         {
             cout << "\n----------------------------------------------------------------------" << endl << endl;
             cout << "Do you want to continue in our application ?\n[1] YES.\n[2] NO.\nChoice: ";
-            string choice3;
             getline(cin, choice3);
-            if (choice3 == "1") 
+            if(choice3 == "1")
                 break;
-            else if (choice3 == "2") {
-                exit = 1;
+            else if(choice3 == "2")
                 break;
-            }
-            else {
+            else{
                 cout << "Please enter a valid choice." << endl;   
                 continue;
             }
         }
-        if (exit)
-            break;
+        if(choice3 == "2")
+                break;
     }
 
+    cout << "\n----------------------------------------------------------------------" << endl << endl;
     cout << "\n#===== Thanks for using our application =====#" << endl;
     return 0;
 }
