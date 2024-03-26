@@ -11,7 +11,7 @@ Version: 1.0
 //========================================================================================================================================//
 #include <iostream>
 #include <bits/stdc++.h>
-#include "Image_class\Image_Class.h"
+#include "Image_Class.h"
 using namespace std;
 
 // Save the effect in a new photo or the same one.
@@ -25,12 +25,17 @@ void how_to_save(Image image, string photo){
         // Save the effect in a new photo.
         if(choice == "1"){
             string new_name;
+            cout << "\n----------------------------------------------------------------------" << endl << endl;
+            cout << "The new file name must be one of the following format.\n";
+            cout << "[1] photo.jpeg [2] photo.jpg [3] photo.png [4] photo.bmp" << endl;
             cout << "- Please enter the new file name\n--> ";
             getline(cin, new_name);
 
             // Check the validity of the new file name.
-            while((new_name.substr(new_name.size() - 4 , 4) != "jpeg") && (new_name.substr(new_name.size() - 3 , 3) != "jpg") && (new_name.substr(new_name.size() - 3 , 3) != "png") && (new_name.substr(new_name.size() - 3 , 3) != "bmp")){
+            while(new_name.size() < 5 || ((new_name.substr(new_name.size() - 4 , 4) != "jpeg") && (new_name.substr(new_name.size() - 3 , 3) != "jpg") && (new_name.substr(new_name.size() - 3 , 3) != "png") && (new_name.substr(new_name.size() - 3 , 3) != "bmp"))){
                 cout << "\n----------------------------------------------------------------------" << endl << endl;
+                cout << "The new file name must be one of the following format.\n";
+                cout << "[1] photo.jpeg [2] photo.jpg [3] photo.png [4] photo.bmp" << endl;
                 cout << "- Please enter a valid new file name\n--> ";
                 getline(cin, new_name);
             }
@@ -43,7 +48,6 @@ void how_to_save(Image image, string photo){
         // Save the effect in the same photo.
         else if(choice == "2"){
             image.saveImage(photo);
-            cout << "\n----------------------------------------------------------------------" << endl << endl;
             cout << "- Photo has been saved successfully" << endl;
             break;
         }
@@ -59,12 +63,16 @@ void how_to_save(Image image, string photo){
 // Save the effect in a new photo only.
 void how_to_save2(Image image){
     string new_name;
+    cout << "The new file name must be one of the following format.\n";
+    cout << "[1] photo.jpeg [2] photo.jpg [3] photo.png [4] photo.bmp" << endl;
     cout << "- Please enter the new file name\n--> ";
     getline(cin, new_name);
 
     // Check the validity of the new file name.
-    while((new_name.substr(new_name.size() - 4 , 4) != "jpeg") && (new_name.substr(new_name.size() - 3 , 3) != "jpg") && (new_name.substr(new_name.size() - 3 , 3) != "png") && (new_name.substr(new_name.size() - 3 , 3) != "bmp")){
+    while(new_name.size() < 5 || ((new_name.substr(new_name.size() - 4 , 4) != "jpeg") && (new_name.substr(new_name.size() - 3 , 3) != "jpg") && (new_name.substr(new_name.size() - 3 , 3) != "png") && (new_name.substr(new_name.size() - 3 , 3) != "bmp"))){
         cout << "\n----------------------------------------------------------------------" << endl << endl;
+        cout << "The new file name must be one of the following format.\n";
+        cout << "[1] photo.jpeg [2] photo.jpg [3] photo.png [4] photo.bmp" << endl;
         cout << "- Please enter a valid new file name\n--> ";
         getline(cin, new_name);
     }
@@ -96,6 +104,8 @@ string load(string name){
 void Grayscale_Conversion(){
     cout << "\n----------------------------------------------------------------------" << endl << endl;
     string photo;                                                                   // Get the photo and make it as an image.
+    cout << "The file name must be one of the following format.\n";
+    cout << "[1] photo.jpeg [2] photo.jpg [3] photo.png [4] photo.bmp" << endl;
     cout << "- Please enter the file name\n--> ";
     getline(cin, photo);
     photo = load(photo);
@@ -128,6 +138,8 @@ void Darken_and_Lighten(){
         if (choice2 ==  "1"){
             cout << "\n----------------------------------------------------------------------" << endl << endl;
             string photo;                                                         // Get the photo and make it as an image.
+            cout << "The file name must be one of the following format.\n";
+            cout << "[1] photo.jpeg [2] photo.jpg [3] photo.png [4] photo.bmp" << endl;
             cout << "- Please enter the file name\n--> ";
             getline(cin, photo);
             photo = load(photo);
@@ -148,6 +160,8 @@ void Darken_and_Lighten(){
         else if(choice2 == "2"){
             cout << "\n----------------------------------------------------------------------" << endl << endl;
             string photo;                                                         // Get the photo and make it as an image.
+            cout << "The file name must be one of the following format.\n";
+            cout << "[1] photo.jpeg [2] photo.jpg [3] photo.png [4] photo.bmp" << endl;
             cout << "- Please enter the file name\n--> ";
             getline(cin, photo);
             photo = load(photo);
@@ -181,15 +195,18 @@ void Darken_and_Lighten(){
 
 // Filter 3 (Merge Images).
 void Merge_Images(){
-    // Load photo 1
-    string photo1;
+    cout << "\n----------------------------------------------------------------------" << endl << endl;
+    string photo1;                                                              // Get the first photo and make it as an image.
+    cout << "The file name must be one of the following format.\n";
+    cout << "[1] photo.jpeg [2] photo.jpg [3] photo.png [4] photo.bmp" << endl;
     cout << "- Please enter the first file name\n--> ";
     getline(cin, photo1);
     photo1 = load(photo1);
     Image photo11(photo1);
 
-    // Load photo 2
-    string photo2;
+    string photo2;                                                              // Get the second photo and make it as an image.
+    cout << "The file name must be one of the following format.\n";
+    cout << "[1] photo.jpeg [2] photo.jpg [3] photo.png [4] photo.bmp" << endl;
     cout << "- Please enter the second file name\n--> ";
     getline(cin, photo2);
     photo2 = load(photo2);
@@ -199,8 +216,7 @@ void Merge_Images(){
     int width = min(photo11.width, photo22.width);
     int height = min(photo11.height, photo22.height);
 
-    Image photo_result(width, height);  // Create the new photo
-
+    Image photo_result(width, height);                                          // Create the new photo
     Image photo1_sized(width, height);
     Image photo2_sized(width, height);
     for (int x = 0; x < width; x++) {
@@ -212,9 +228,8 @@ void Merge_Images(){
             }
         }
     }
-
-    // Applying merge
-    for (int i = 0; i < photo_result.width; ++i) {
+                        
+    for (int i = 0; i < photo_result.width; ++i) {                              // Applying merge
         for (int j = 0; j < photo_result.height; ++j) {
             for (int k = 0; k < 3; ++k) {
                 int avrg = 0;
@@ -230,6 +245,8 @@ void Merge_Images(){
 void Invert_Image(){
     cout << "\n----------------------------------------------------------------------" << endl << endl;
     string photo_name;                                                           // Get the photo and make it as an image.
+    cout << "The file name must be one of the following format.\n";
+    cout << "[1] photo.jpeg [2] photo.jpg [3] photo.png [4] photo.bmp" << endl;
     cout << "- Please enter the file name\n--> ";
     getline(cin, photo_name);
     photo_name = load(photo_name);
@@ -257,6 +274,8 @@ void Rotate_Image(){
         if (choice2 ==  "1"){
             cout << "\n----------------------------------------------------------------------" << endl << endl;
             string photo;                                                       // Get the photo and make it as an image.
+            cout << "The file name must be one of the following format.\n";
+            cout << "[1] photo.jpeg [2] photo.jpg [3] photo.png [4] photo.bmp" << endl;
             cout << "- Please enter the file name\n--> ";
             getline(cin, photo);
             photo = load(photo);
@@ -282,6 +301,8 @@ void Rotate_Image(){
         else if(choice2 == "2"){
             cout << "\n----------------------------------------------------------------------" << endl << endl;
             string photo;                                                       // Get the photo and make it as an image.
+            cout << "The file name must be one of the following format.\n";
+            cout << "[1] photo.jpeg [2] photo.jpg [3] photo.png [4] photo.bmp" << endl;
             cout << "- Please enter the file name\n--> ";
             getline(cin, photo);
             photo = load(photo);
@@ -309,6 +330,8 @@ void Rotate_Image(){
         else if(choice2 == "3"){
             cout << "\n----------------------------------------------------------------------" << endl << endl;
             string photo;                                                       // Get the photo and make it as an image.
+            cout << "The file name must be one of the following format.\n";
+            cout << "[1] photo.jpeg [2] photo.jpg [3] photo.png [4] photo.bmp" << endl;
             cout << "- Please enter the file name\n--> ";
             getline(cin, photo);
             photo = load(photo);
@@ -345,6 +368,8 @@ void Rotate_Image(){
 void Black_n_White() {
     cout << "\n----------------------------------------------------------------------" << endl << endl;
     string photo_name;                                                          // Get the photo and make it as an image.
+    cout << "The file name must be one of the following format.\n";
+    cout << "[1] photo.jpeg [2] photo.jpg [3] photo.png [4] photo.bmp" << endl;
     cout << "Please enter the photo name: ";
     getline(cin, photo_name);
     photo_name = load(photo_name);
@@ -386,6 +411,8 @@ void Flip() {
         if (choice == "1") {
             cout << "\n----------------------------------------------------------------------" << endl << endl;
             string photo_name;                                                  // Get the photo and make it as an image.
+            cout << "The file name must be one of the following format.\n";
+            cout << "[1] photo.jpeg [2] photo.jpg [3] photo.png [4] photo.bmp" << endl;
             cout << "Please enter the photo name: ";
             getline(cin, photo_name);
             photo_name = load(photo_name);
@@ -413,6 +440,8 @@ void Flip() {
         else if (choice == "2") {
             cout << "\n----------------------------------------------------------------------" << endl << endl;
             string photo_name;                                                  // Get the photo and make it as an image.
+            cout << "The file name must be one of the following format.\n";
+            cout << "[1] photo.jpeg [2] photo.jpg [3] photo.png [4] photo.bmp" << endl;
             cout << "Please enter the photo name: ";
             getline(cin, photo_name);
             photo_name = load(photo_name);
@@ -465,8 +494,8 @@ int main(){
             while (true){
                 cout << "\n----------------------------------------------------------------------" << endl << endl;
                 cout << "What filter do you want to apply ?\n"<< "[1] Grayscale Conversion.\n"<< "[2] Darken and Lighten Image.\n"
-                    << "[3] Merge Images.\n"<< "[4] Invert Image.\n"<< "[5] Rotate Image.\n"<< "[6] Black and White Image.\n"
-                    << "[7] Flip Image.\n"<< "[8] Back.\n"<< "Choice: ";
+                    << "[3] Merge Images.\n"<< "[4] Invert Image.\n"<< "[5] Rotate Image.\n"<< "[6] Black and White.\n"
+                    << "[7] Flip.\n"<< "[8] Back.\n"<< "Choice: ";
                 string choice1;
                 getline(cin, choice1);
 
