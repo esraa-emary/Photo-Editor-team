@@ -480,6 +480,27 @@ void Flip() {
     }
 }
 
+// Filter 8 (Infrared Photography).
+void Infrared_Photography(){
+    cout << "\n----------------------------------------------------------------------" << endl << endl;
+    string photo;                                                                   // Get the photo and make it as an image.
+    cout << "The file name must be one of the following format.\n";
+    cout << "[1] photo.jpeg [2] photo.jpg [3] photo.png [4] photo.bmp" << endl;
+    cout << "- Please enter the file name\n--> ";
+    getline(cin, photo);
+    photo = load(photo);
+    Image image(photo);
+    for(int i=0; i<image.width; i++){
+        for(int j=0; j<image.height; j++){
+            for(int k=0; k<3; k++){
+                image(i, j, k) = 255 - image(i, j, k);
+                image(i, j, 0) = 255;
+            }
+        }  
+    }
+    how_to_save(image,photo);
+}
+
 //================================================================= Main Program ==============================================================//
 
 int main(){
@@ -502,7 +523,7 @@ int main(){
                 cout << "\n----------------------------------------------------------------------" << endl << endl;
                 cout << "What filter do you want to apply ?\n"<< "[1] Grayscale Conversion.\n"<< "[2] Darken and Lighten Image.\n"
                     << "[3] Merge Images.\n"<< "[4] Invert Image.\n"<< "[5] Rotate Image.\n"<< "[6] Black and White.\n"
-                    << "[7] Flip.\n"<< "[8] Back.\n"<< "Choice: ";
+                    << "[7] Flip.\n"<< "[8] Infrared Photography.\n" << "[9] Back.\n"<< "Choice: ";
                 string choice1;
                 getline(cin, choice1);
 
@@ -555,8 +576,15 @@ int main(){
                     break;
                 }
 
+                // Applying filter7 (Flip Image).
+                else if (choice1 == "8")
+                {
+                    Infrared_Photography();
+                    break;
+                }
+
                 // Back to the main menu.
-                else if (choice1 =="8")
+                else if (choice1 =="9")
                     break;
 
                 // Invalid choice.
