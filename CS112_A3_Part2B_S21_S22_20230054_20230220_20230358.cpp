@@ -1,5 +1,5 @@
 /*
-File name   :   CS112_A3_Part2B_S21_S22_20230054_20230220_20230358.cpp
+File name   :   CS112_A3_Part1_S21_20230054_20230220_20230358.cpp
 Purpose     :   Make an application that takes a photo and apply a filter to it.
 Version     :   1.0
 
@@ -9,10 +9,10 @@ Version     :   1.0
 ---> 2: Mohamed Nabil Elsaied Ali.        ID: 20230358  |      Rotate - Invert      |                  Resizing algorithm
 
 
-Professor                 :   Dr.Mohamed ElRamly
-Teaching Assistant        :   Eng.Rana Abdelkader
-Section Number            :   S21-S22
-repository link on gitHub :   https://github.com/esraa-emary/Assignment-3
+Professor           :   Dr.Mohamed ElRamly
+Teaching Assistant  :   Eng.Rana Abdelkader
+Section Number      :   S21-S22
+
 */
 //========================================================================================================================================//
 
@@ -113,9 +113,9 @@ string load(string &name){
     }
 }
 
-//================================================================ Main Functions =============================================================//
+// ========================================================== Main Functions ========================================================== //
 
-//======================================================= Filter 1 (Grayscale Conversion) ==================================================//
+// ========================================================== Filter 1 (Grayscale Conversion) ========================================================== //
 Image Grayscale_Conversion(Image &image){
     for (int i = 0; i < image.width; ++i) {
         for (int j = 0; j < image.height; ++j) {
@@ -132,7 +132,7 @@ Image Grayscale_Conversion(Image &image){
     return image;
 }
 
-//============================================================= Filter 2 (Black and White) =====================================================//
+// ========================================================== Filter 2 (Black and White) ========================================================== //
 Image Black_n_White(Image &image) {
     for (int i = 0; i < image.width; i++) {
         for (int j = 0; j < image.height; j++) {
@@ -157,7 +157,7 @@ Image Black_n_White(Image &image) {
     return image;
 }
 
-//========================================================= Filter 3 (Invert Image) ============================================================//
+// ========================================================== Filter 3 (Invert Image) ========================================================== //
 Image Invert_Image(Image &image){
     for(int i=0; i<image.width; i++){
         for(int j=0; j<image.height; j++){
@@ -169,7 +169,7 @@ Image Invert_Image(Image &image){
     return image;
 }
 
-// ============================================================= Filter 4 (Merge Images) ======================================================//
+// ========================================================== Filter 4 (Merge Images) ========================================================== //
 Image Merge_Images(Image &photo11, Image &photo22){
     // Declare minimum width and minimum height to unify dimensions for both photos
     int width = min(photo11.width, photo22.width);
@@ -200,7 +200,7 @@ Image Merge_Images(Image &photo11, Image &photo22){
     return photo_result;
 }
 
-//============================================================== Filter 5 (Flip) ============================================================//
+// ========================================================== Filter 5 (Flip) ========================================================== //
 Image Flip_Image(Image &image) {
     while (true) {
         cout << "\n----------------------------------------------------------------------" << endl << endl;
@@ -258,7 +258,7 @@ Image Flip_Image(Image &image) {
     return image;
 }
 
-//========================================================= Filter 6 (Rotate Image) ===========================================================//
+// ========================================================== Filter 6 (Rotate Image) ========================================================== //
 Image Rotate_Image(Image &image){
     while (true)
     {
@@ -333,7 +333,7 @@ Image Rotate_Image(Image &image){
     return image;
 }
 
-//======================================================== Filter 7 (Darken and Lighten Image) =======================================================//
+// ========================================================== Filter 7 (Darken and Lighten Image) ========================================================== //
 Image Darken_and_Lighten(Image &image){
     while (true)
     {
@@ -384,7 +384,67 @@ Image Darken_and_Lighten(Image &image){
     return image;
 }
 
-//========================================================= Filter 17 (Infrared) ===================================================================//
+// ========================================================== Filter 10 (Detect_Image_Edges) ========================================================== //
+Image Detect_Image_Edges(Image &image){
+    for (int i = 1; i < image.width-1 ; i++){
+        for (int j = 0; j < image.height; j++){
+            if (!((image(i,j,0) <= (image(i+1 , j , 0)+10 )||image(i,j,0) >= (image(i-1 , j , 0)-10  ) ))) {
+                if (!((image(i,j,1) <= (image(i+1 , j , 1)+10 )||image(i,j,1) >= (image(i-1 , j , 1)-10  ) ))) {
+                    if (!((image(i,j,2) <= (image(i+1 , j , 2)+10  )||image(i,j,2) >= (image(i-1 , j , 2)-10  ) ))) {
+                        image(i,j,0) =0;
+                        image(i,j,1) =0;           
+                        image(i,j,2) =0;
+                    }
+                }
+            }
+
+            else if (!((image(i,j,0) <= (image(i , j+1, 0)+10 )||image(i,j,0) >= (image(i , j-1 , 0)-10  ) ))) {
+                if (!((image(i,j,1) <= (image(i , j+1 , 1)+10 )||image(i,j,1) >= (image(i , j-1 , 1)-10  ) ))) {
+                    if (!((image(i,j,2) <= (image(i , j+1 , 2)+10  )||image(i,j,2) >= (image(i , j-1 , 2)-10  ) ))) {
+                        image(i,j,0) =0;
+                        image(i,j,1) =0;           
+                        image(i,j,2) =0;
+                    }
+                }
+            }
+
+            else{
+                image(i,j,0) =255;
+                image(i,j,1) =255;           
+                image(i,j,2) =255;
+            }
+        }
+    }
+    return image;
+}
+
+// ========================================================== Filter 11 (Resizing Images) ========================================================== //
+Image Resizing_Image(Image &image){
+    float width, height;
+    cout << "\n----------------------------------------------------------------------" << endl << endl;
+    cout << "Please enter the width you want:\n--> ";                               // Read the width.
+    cin >>  width;
+    cout << "\n----------------------------------------------------------------------" << endl << endl;
+    cout << "Please enter the height you want:\n--> ";                              // Read the height.
+    cin >> height;
+    cin.ignore();
+
+    Image image_result(width,height);
+    float step_width1 = image.width/width;
+    float step_height1 = image.height/height;
+    
+    for(int i =0 ;i<width;i++){
+        for(int j=0;j<height;j++){
+            for(int k=0;k<3;k++){
+                image_result(i,j,k) = image((i*step_width1) , (j*step_height1),k);   // Change pixel values. 
+            }
+        }
+    }
+    image = image_result;
+    return image;
+}
+
+// ========================================================== Filter 17 (Infrared) ========================================================== //
 Image Infrared_Photography(Image &image){
     for(int i=0; i<image.width; i++){
         for(int j=0; j<image.height; j++){
@@ -412,10 +472,9 @@ int main(){
     bool flag = false;
     while (true){
         cout << "\n----------------------------------------------------------------------" << endl << endl;
-        cout << "What do you want to do ?\n"<< "[1] Load a new image.\n" << "[2] Grayscale Conversion.\n" << "[3] Black and White.\n" 
-             << "[4] Invert Image.\n" << "[5] Merge Images.\n" << "[6] Flip Image.\n" << "[7] Rotate Image.\n" << "[8] Darken and Lighten Image.\n" 
-             << "[9] \n" << "[10] \n" << "[11] \n" << "[12] \n" << "[13] \n" << "[14] \n" << "[15] \n" << "[16] Infrared Photography.\n" <<"[17] Save the image.\n" 
-             << "[18] Exit.\n"<< "Choice: ";
+        cout << "What do you want to do ?\n"<< "[1] Load a new image.\n" << "[2] Grayscale Conversion.\n" << "[3] Black and White.\n" << "[4] Invert Image.\n" << "[5] Merge Images.\n" 
+             << "[6] Flip Image.\n" << "[7] Rotate Image.\n" << "[8] Darken and Lighten Image.\n" << "[9] \n" << "[10] \n" << "[11] Detect Image Edges.\n" 
+             << "[12] Resizing Image.\n" << "[13] \n" << "[14] \n" << "[15] \n" << "[16] Infrared Photography.\n" <<"[17] Save the image.\n" << "[18] Exit.\n"<< "Choice: ";
         string choice1;
         getline(cin, choice1);
 
@@ -437,7 +496,6 @@ int main(){
             cout << "Please enter the file name:\n--> ";
             string photo_name;
             getline(cin, photo_name);
-            cin.ignore(0);
             name = photo_name;
             name = load(name);
             Image image1 (name);
@@ -497,15 +555,15 @@ int main(){
         //     image = ;
         // }
 
-        // Applying filter 10 ().
-        // else if (choice1 == "11"){
-        //     image = ;
-        // }
+        // Applying filter 10 (Detect Image Edges).
+        else if (choice1 == "11"){
+            image = Detect_Image_Edges(image);
+        }
 
-        // Applying filter 11 ().
-        // else if (choice1 == "12"){
-        //     image = ;
-        // }
+        // Applying filter 11 (Resizing Images).
+        else if (choice1 == "12"){
+            image = Resizing_Image(image);
+        }
 
         // Applying filter 12 ().
         // else if (choice1 == "13"){
