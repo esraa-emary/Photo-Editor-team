@@ -386,6 +386,18 @@ Image Darken_and_Lighten(Image &image){
     return image;
 }
 
+// ========================================================== Filter 8 (Crop Image) ========================================================== //
+Image Crop_Image(Image &image){
+
+    return image;
+}
+
+// ========================================================== Filter 9 (Adding a Frame to the Picture) ========================================================== //
+Image Frame_Image(Image &image){
+
+    return image;
+}
+
 // ========================================================== Filter 10 (Detect_Image_Edges) ========================================================== //
 Image Detect_Image_Edges(Image &image){
     for (int i = 1; i < image.width-1 ; i++){
@@ -441,6 +453,12 @@ Image Resizing_Image(Image &image){
         }
     }
     image = image_result;
+    return image;
+}
+
+// ========================================================== Filter 12 (Blur Image) ========================================================== //
+Image Blur_Image(Image &image){
+
     return image;
 }
 
@@ -507,8 +525,8 @@ int main(){
     while (true){
         cout << "\n----------------------------------------------------------------------" << endl << endl;
         cout << "What do you want to do ?\n"<< "[1] Load a new image.\n" << "[2] Grayscale Conversion.\n" << "[3] Black and White.\n" << "[4] Invert Image.\n" << "[5] Merge Images.\n" 
-             << "[6] Flip Image.\n" << "[7] Rotate Image.\n" << "[8] Darken and Lighten Image.\n" << "[9] \n" << "[10] \n" << "[11] Detect Image Edges.\n" 
-             << "[12] Resizing Image.\n" << "[13] \n" << "[14] natural sunlight.\n" << "[15] purple Image.\n" << "[16] Infrared Photography.\n" <<"[17] Save the image.\n" << "[18] Exit.\n"<< "Choice: ";
+             << "[6] Flip Image.\n" << "[7] Rotate Image.\n" << "[8] Darken and Lighten Image.\n" << "[9] Crop Image.\n" << "[10] Adding a Frame to the Picture.\n" << "[11] Detect Image Edges.\n" 
+             << "[12] Resizing Image.\n" << "[13] Blur Image.\n" << "[14] natural sunlight.\n" << "[15] purple Image.\n" << "[16] Infrared Photography.\n" <<"[17] Save the image.\n" << "[18] Exit.\n"<< "Choice: ";
         string choice1;
         getline(cin, choice1);
 
@@ -579,15 +597,15 @@ int main(){
             image = Darken_and_Lighten(image);
         }
 
-        // Applying filter 8 ().
-        // else if (choice1 == "9"){
-        //     image = ;
-        // }
+        // Applying filter 8 (Crop Image).
+        else if (choice1 == "9"){
+            image = Crop_Image(image);
+        }
 
-        // Applying filter 9 ().
-        // else if (choice1 == "10"){
-        //     image = ;
-        // }
+        // Applying filter 9 (Adding a Frame to the Picture).
+        else if (choice1 == "10"){
+            image = Frame_Image(image);
+        }
 
         // Applying filter 10 (Detect Image Edges).
         else if (choice1 == "11"){
@@ -599,10 +617,10 @@ int main(){
             image = Resizing_Image(image);
         }
 
-        // Applying filter 12 ().
-        // else if (choice1 == "13"){
-        //     image = ;
-        // }
+        // Applying filter 12 (Blur Image).
+        else if (choice1 == "13"){
+            image = Blur_Image(image);
+        }
        
         // Applying filter 13 (natural sunlight).
         else if (choice1 == "14"){
