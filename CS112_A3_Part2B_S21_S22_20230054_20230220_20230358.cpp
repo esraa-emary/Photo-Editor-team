@@ -1,5 +1,5 @@
 /*
-File name   :   CS112_A3_Part1_S21_20230054_20230220_20230358.cpp
+File name   :   CS112_A3_Part2B_S21_S22_20230054_20230220_20230358.cpp
 Purpose     :   Make an application that takes a photo and apply a filter to it.
 Version     :   1.0
 
