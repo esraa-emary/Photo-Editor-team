@@ -41,7 +41,9 @@ void how_to_save(Image &image, string &photo){
             getline(cin, new_name);
 
             // Check the validity of the new file name.
-            while(new_name.size() < 5 || ((new_name.substr(new_name.size() - 4 , 4) != "jpeg") && (new_name.substr(new_name.size() - 3 , 3) != "jpg") && (new_name.substr(new_name.size() - 3 , 3) != "png") && (new_name.substr(new_name.size() - 3 , 3) != "bmp"))){
+            while(new_name.size() < 5 || ((new_name.substr(new_name.size() - 5 , 5) != ".jpeg") && (new_name.substr(new_name.size() - 4 , 4) != ".jpg") && (new_name.substr(new_name.size() - 4 , 4) != ".png") && (new_name.substr(new_name.size() - 4 , 4) != ".bmp"))){
+                cout << "\n----------------------------------------------------------------------" << endl << endl;
+                cout << "Invalid new file name.\n";
                 cout << "\n----------------------------------------------------------------------" << endl << endl;
                 cout << "Remember that:" << endl;
                 cout << "The new file name must be one of the following format.\n";
@@ -387,15 +389,13 @@ Image Darken_and_Lighten(Image &image){
 // ========================================================== Filter 10 (Detect_Image_Edges) ========================================================== //
 Image Detect_Image_Edges(Image &image){
     for (int i = 1; i < image.width-1 ; i++){
-        for (int j = 0; j < image.height; j++){
-            if (!((image(i,j,0) <= (image(i+1 , j , 0)+10 )||image(i,j,0) >= (image(i-1 , j , 0)-10  ) ))) {
-                if (!((image(i,j,1) <= (image(i+1 , j , 1)+10 )||image(i,j,1) >= (image(i-1 , j , 1)-10  ) ))) {
-                    if (!((image(i,j,2) <= (image(i+1 , j , 2)+10  )||image(i,j,2) >= (image(i-1 , j , 2)-10  ) ))) {
-                        image(i,j,0) =0;
-                        image(i,j,1) =0;           
-                        image(i,j,2) =0;
-                    }
-                }
+        for (int j = 1; j < image.height-1; j++){
+            if ((!((image(i,j,0) <= (image(i+1 , j , 0)+10 ))||image(i,j,0) >= (image(i-1 , j , 0)-10  ) ))&&
+                (!((image(i,j,1) <= (image(i+1 , j , 1)+10 ))||image(i,j,1) >= (image(i-1 , j , 1)-10  ) ))&& 
+                (!(image(i,j,2) <= (image(i+1 , j , 2)+10  )||image(i,j,2) >= (image(i-1 , j , 2)-10  ) ))) {
+                    image(i,j,0) =0;
+                    image(i,j,1) =0;           
+                    image(i,j,2) =0;
             }
 
             else if (!((image(i,j,0) <= (image(i , j+1, 0)+10 )||image(i,j,0) >= (image(i , j-1 , 0)-10  ) ))) {
@@ -432,7 +432,7 @@ Image Resizing_Image(Image &image){
     Image image_result(width,height);
     float step_width1 = image.width/width;
     float step_height1 = image.height/height;
-    
+
     for(int i =0 ;i<width;i++){
         for(int j=0;j<height;j++){
             for(int k=0;k<3;k++){
@@ -444,7 +444,41 @@ Image Resizing_Image(Image &image){
     return image;
 }
 
-// ========================================================== Filter 17 (Infrared) ========================================================== //
+// ========================================================== Filter 13 (natural sunlight) ========================================================== //
+Image natural_sunlight(Image &image){
+    for(int i = 0; i < image.width; i++) {
+        for(int j = 0; j < image.height; j++) {
+            if (image(i, j, 1) <= 220) image(i, j, 1) += 35;  // Check for underflow
+            else image(i, j, 1) = 255;
+
+            if (image(i, j, 0) <= 220) image(i, j, 0) += 35;  // Check for underflow
+            else image(i, j, 0) = 255;
+
+            if (image(i, j, 2) >= 20) image(i, j, 2) -= 20;  // Check for underflow
+            else image(i, j, 2) = 0;
+        }
+    }
+    return image;
+}
+
+// ========================================================== Filter 14 (purple Image) ========================================================== //
+Image purple_Image(Image &image){
+    for(int i = 0; i < image.width; i++) {
+        for(int j = 0; j < image.height; j++) {
+            if (image(i, j, 0) <= 240) image(i, j, 0) += 15;  // Check for overflow
+            else image(i, j, 0) = 255;
+            
+            if (image(i, j, 2) <= 230) image(i, j, 2) += 25;  // Check for overflow
+            else image(i, j, 2) = 255;
+            
+            if (image(i, j, 1) >= 40) image(i, j, 1) -= 40;  // Check for underflow
+            else image(i, j, 1) = 0;
+        }
+    }
+    return image;
+}
+
+// ========================================================== Filter 15 (Infrared Photography) ========================================================== //
 Image Infrared_Photography(Image &image){
     for(int i=0; i<image.width; i++){
         for(int j=0; j<image.height; j++){
@@ -474,7 +508,7 @@ int main(){
         cout << "\n----------------------------------------------------------------------" << endl << endl;
         cout << "What do you want to do ?\n"<< "[1] Load a new image.\n" << "[2] Grayscale Conversion.\n" << "[3] Black and White.\n" << "[4] Invert Image.\n" << "[5] Merge Images.\n" 
              << "[6] Flip Image.\n" << "[7] Rotate Image.\n" << "[8] Darken and Lighten Image.\n" << "[9] \n" << "[10] \n" << "[11] Detect Image Edges.\n" 
-             << "[12] Resizing Image.\n" << "[13] \n" << "[14] \n" << "[15] \n" << "[16] Infrared Photography.\n" <<"[17] Save the image.\n" << "[18] Exit.\n"<< "Choice: ";
+             << "[12] Resizing Image.\n" << "[13] \n" << "[14] natural sunlight.\n" << "[15] purple Image.\n" << "[16] Infrared Photography.\n" <<"[17] Save the image.\n" << "[18] Exit.\n"<< "Choice: ";
         string choice1;
         getline(cin, choice1);
 
@@ -570,15 +604,15 @@ int main(){
         //     image = ;
         // }
        
-        // Applying filter 13 ().
-        // else if (choice1 == "14"){
-        //     image = ;
-        // }
+        // Applying filter 13 (natural sunlight).
+        else if (choice1 == "14"){
+            image = natural_sunlight(image);
+        }
 
-        // Applying filter 14 ().
-        // else if (choice1 == "15"){
-        //     image = ;
-        // }
+        // Applying filter 14 (purple Image).
+        else if (choice1 == "15"){
+            image = purple_Image(image);
+        }
 
         // Applying filter 15 (Infrared Photography).
         else if (choice1 == "16"){
