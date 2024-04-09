@@ -77,6 +77,7 @@ void how_to_save(Image &image, string &photo){
 // Save the effect in a new photo only.
 void how_to_save2(Image &image){
     string new_name;
+    cout << "\n----------------------------------------------------------------------" << endl << endl;
     cout << "Remember that:" << endl;
     cout << "The new file name must be one of the following format.\n";
     cout << "[1] photo.jpeg [2] photo.jpg [3] photo.png [4] photo.bmp" << endl;
