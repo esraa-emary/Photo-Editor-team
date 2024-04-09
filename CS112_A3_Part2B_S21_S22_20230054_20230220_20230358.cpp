@@ -364,7 +364,7 @@ Image Darken_and_Lighten(Image &image){
                 for (int j = 0; j < image.height; ++j) {
                     for (int k = 0; k < 3; ++k) {
                         int val = image(i, j, k) * lighten;                     // Change pixel values.
-                        if (val > 255)                                          // Check if channel value exceeds 255 
+                        if (val > 255)                                          // Check if channel value exceeds 255.
                             (image(i, j, k) = 255);
                         else
                             image(i, j, k) = val;
@@ -394,7 +394,174 @@ Image Crop_Image(Image &image){
 
 // ========================================================== Filter 9 (Adding a Frame to the Picture) ========================================================== //
 Image Frame_Image(Image &image){
+    while (true)
+    {
+        int width , height , minimum;
+        width = image.width; 
+        height = image.height;
+        minimum = min(width , height);
+        
+        cout << "\n----------------------------------------------------------------------" << endl << endl;
+        cout << "What type of frame do you want ?\n[1] Simple.\n[2] Fancy.\n[3] Back.\nChoice: ";
+        string choice2;
+        cin >> choice2;
 
+        // Apply a Simple frame.
+        if (choice2 == "1"){
+            for (int x = 0 ; x < width ; x++){
+                for(int y = 0 ; y < height ; y++){
+                    for(int k = 0 ; k < 3 ; k++){
+                        if((x > (minimum * 0.01) && x < (minimum * 0.025)) || (x < width - (minimum * 0.01) && x > width - (minimum * 0.025)) ||
+                        (y > (minimum * 0.01) && y < (minimum * 0.025)) || (y < height - (minimum * 0.01) && y > height - (minimum * 0.025))){
+                            if((y>(minimum*0.01) &&y<height-(minimum*0.01) )&&(x>(minimum*0.01) &&x<width-(minimum*0.01) )){
+                                image(x,y,0)=13;                           //left, right, top, bottom,blue.
+                                image(x,y,1)=60;
+                                image(x,y,2)=250;
+                            }
+                        }
+
+                        if((x < (minimum * 0.01) || x > width - (minimum * 0.01) || y < (minimum * 0.01) || y > height - (minimum * 0.01))){
+                            image(x,y,k)=245;                               //left, right, top, bottom.
+                        }
+                    }
+                }
+            }
+            return image;
+        }
+        
+        // Apply a Fancy frame.
+        if (choice2 == "2"){
+            cout << "\n----------------------------------------------------------------------" << endl << endl;
+            cout << "Which frame do you want ?\n[1] Frame 1.\n[2] Frame 2.\n[3] Back.\nChoice: ";
+            string choice_frame;
+            cin >> choice_frame;
+
+            while (true)
+            {
+                // Apply frame 1.
+                if (choice_frame == "1"){
+                    for (int x = 0 ; x < width ; x++){
+                        for(int y = 0; y < height ; y++){
+                            for(int k = 0 ; k < 3 ; k++){
+                            
+                                if(( x > (minimum * 0.03) && x < (minimum * 0.034)) || (x < width - (minimum * 0.03) && x > width - (minimum * 0.034))){
+                                    if((y > (minimum * 0.03) && y < height - (minimum * 0.03))){
+                                        image(x,y,k) = 245;                    //y-axis.
+                                    }
+                                }
+
+                                if((y>(minimum*0.028)&&y< (minimum*0.032) )||(y<height-(minimum*0.028) && y>height-(minimum*0.032))){
+                                    if((x> (minimum*0.028) &&x<width-(minimum *0.028))){
+                                        image(x,y,k)=245;                    //x-axis.
+                                    }
+                                }
+            
+
+                                if((x>(minimum*0.02)&&x<(minimum*0.024))|| (x<width-(minimum*0.02) && x>width-(minimum*0.024)) ||
+                                (y>(minimum*0.02)&&y< (minimum*0.024) )||(y<height-(minimum*0.02) && y>height-(minimum*0.024))){
+                                    image(x,y,k)=245; 
+                    
+                                }
+
+                                if((x> (minimum*0.008) &&x< (minimum*0.02) )|| (x<width-(minimum*0.008)&&x>width-(minimum*0.02)) ||                              
+                                (y>(minimum*0.008)&&y<(minimum*0.02))||(y<height-(minimum*0.008) && y>height-(minimum*0.02))){
+                                    if((y>(minimum*0.008)&&y<height-(minimum*0.008))&&(x>(minimum*0.008)&&x<width-(minimum*0.008))){
+                                        image(x,y,0)=13;                    //left, right, top, bottom, blue.
+                                        image(x,y,1)=60;
+                                        image(x,y,2)=250;
+                                    }
+                                }
+                            
+                                if((x<(minimum*0.008)|| x>width-(minimum*0.008)||y<(minimum*0.008)||y>height-(minimum*0.008))){
+                                    image(x,y,k)=245;                       //left, right, top, bottom.
+                                }  
+                            }
+                        }
+                    }
+                    return image;
+                }
+
+                // Apply frame 2.
+                else if(choice_frame == "2"){
+                    for (int x=0; x<width ; x++){
+                        for(int y=0; y<height; y++){
+                            for(int k=0;k<3;k++){
+                                if((x<(minimum*0.005)|| x>width-(minimum*0.005)||y<(minimum*0.005)||y>height-(minimum*0.005))){
+                                    image(x,y,k)=245;                        //left, right, top, bottom.
+                                }
+                            
+                                else if((x> (minimum*0.005) &&x< (minimum*0.018) )|| (x<width-(minimum*0.005)&&x>width-(minimum*0.018)) ||      
+                                (y>(minimum*0.005)&&y<(minimum*0.018))||(y<height-(minimum*0.005) && y>height-(minimum*0.018))){
+                                    if((y>(minimum*0.005)&&y<height-(minimum*0.005))&&(x>(minimum*0.005)&&x<width-(minimum*0.005))){
+                                        image(x,y,0)=13;                     //left, right, top, bottom,blue
+                                        image(x,y,1)=60;
+                                        image(x,y,2)=250;
+                                    }
+                                }
+                                   
+                                    
+                                else if((x> (minimum*0.018) &&x< (minimum*0.03) )|| (x<width-(minimum*0.018)&&x>width-(minimum*0.03)) ||
+                                (y>(minimum*0.018)&&y<(minimum*0.03))||(y<height-(minimum*0.018) && y>height-(minimum*0.03))){
+                                    if(((y>(minimum*0.018)&&y<height-(minimum*0.018))&&(x>(minimum*0.018)&&x<width-(minimum*0.018)))){
+                                        image(x,y,k)=245;                    //left, right, top, bottom,blue
+                                    }
+                                }
+
+                                //squares
+                                else if(((x> (minimum*0.03) &&x< (minimum*0.045) )|| (x<width-(minimum*0.03)&&(x>width-(minimum*0.045))))
+                                && ((y>(minimum*0.03) && y<(minimum*0.045))||(y<height-(minimum*0.03) && y>height-(minimum*0.045)))){
+                                    image(x,y,k)=245;
+                                }
+
+                                //square2//width
+                                if((((x> (minimum*0.03) &&x< (minimum*0.065) ))|| (x<width-(minimum*0.03)&&(x>width-(minimum*0.065))))
+                                && ((y>(minimum*0.06) && y < (minimum*0.063)||(y<height-(minimum*0.06) && y>height-(minimum*0.063))))){
+                                    image(x,y,k)=245;
+                                }
+
+                                //square2//height
+                                else if((((x> (minimum*0.06) &&x< (minimum*0.063) ))|| (x<width-(minimum*0.06)&&(x>width-(minimum*0.063))))
+                                && ((y>(minimum*0.03) && y<(minimum*0.065)||(y<height-(minimum*0.03) && y>height-(minimum*0.065))))){
+                                    image(x,y,k)=245;  
+                                }
+
+                                //square3//width               
+                                if((((x> (minimum*0.03) &&x< (minimum*0.085) ))|| (x<width-(minimum*0.03)&&(x>width-(minimum*0.085))))
+                                && ((y>(minimum*0.075) && y<(minimum*0.085)||(y<height-(minimum*0.075) && y>height-(minimum*0.085))))){
+                                    image(x,y,k)=245;
+                                }
+
+                                //square3//height
+                                else if((((x> (minimum*0.075) &&x< (minimum*0.085) ))|| (x<width-(minimum*0.075)&&(x>width-(minimum*0.085))))
+                                && ((y>(minimum*0.03) && y<(minimum*0.085)||(y<height-(minimum*0.03) && y>height-(minimum*0.085))))){
+                                    image(x,y,k)=245;
+                                }
+                            }
+                        }
+                    }
+                    return image;
+                }
+
+                // Back to the menu.
+                else if (choice_frame == "3")
+                    break;
+
+                else{
+                    cout << "Please enter a valid choice." << endl;   
+                    continue;
+                }
+            }
+        }
+          
+        // Back to the main menu.
+        else if (choice2 =="3")
+            break;
+
+        else{
+            cout << "Please enter a valid choice." << endl;   
+            continue;
+        }
+    }
     return image;
 }
 
@@ -462,7 +629,7 @@ Image Blur_Image(Image &image){
     return image;
 }
 
-// ========================================================== Filter 13 (natural sunlight) ========================================================== //
+// ========================================================== Filter 13 (Natural sunlight) ========================================================== //
 Image natural_sunlight(Image &image){
     for(int i = 0; i < image.width; i++) {
         for(int j = 0; j < image.height; j++) {
@@ -479,7 +646,7 @@ Image natural_sunlight(Image &image){
     return image;
 }
 
-// ========================================================== Filter 14 (purple Image) ========================================================== //
+// ========================================================== Filter 14 (Purple Image) ========================================================== //
 Image purple_Image(Image &image){
     for(int i = 0; i < image.width; i++) {
         for(int j = 0; j < image.height; j++) {
@@ -524,9 +691,9 @@ int main(){
     bool flag = false;
     while (true){
         cout << "\n----------------------------------------------------------------------" << endl << endl;
-        cout << "What do you want to do ?\n"<< "[1] Load a new image.\n" << "[2] Grayscale Conversion.\n" << "[3] Black and White.\n" << "[4] Invert Image.\n" << "[5] Merge Images.\n" 
-             << "[6] Flip Image.\n" << "[7] Rotate Image.\n" << "[8] Darken and Lighten Image.\n" << "[9] Crop Image.\n" << "[10] Adding a Frame to the Picture.\n" << "[11] Detect Image Edges.\n" 
-             << "[12] Resizing Image.\n" << "[13] Blur Image.\n" << "[14] natural sunlight.\n" << "[15] purple Image.\n" << "[16] Infrared Photography.\n" <<"[17] Save the image.\n" << "[18] Exit.\n"<< "Choice: ";
+        cout << "What do you want to do ?\n"<< "[1]  Load a new image.\n" << "[2]  Grayscale Conversion.\n" << "[3]  Black and White.\n" << "[4]  Invert Image.\n" << "[5]  Merge Images.\n" 
+             << "[6]  Flip Image.\n" << "[7]  Rotate Image.\n" << "[8]  Darken and Lighten Image.\n" << "[9]  Crop Image.\n" << "[10] Adding a Frame to the Picture.\n" << "[11] Detect Image Edges.\n" 
+             << "[12] Resizing Image.\n" << "[13] Blur Image.\n" << "[14] Natural sunlight.\n" << "[15] Purple Image.\n" << "[16] Infrared Photography.\n" <<"[17] Save the image.\n" << "[18] Exit.\n"<< "Choice: ";
         string choice1;
         getline(cin, choice1);
 
