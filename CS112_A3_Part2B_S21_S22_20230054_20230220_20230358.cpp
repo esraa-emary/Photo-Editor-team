@@ -175,8 +175,21 @@ Image Invert_Image(Image &image){
 // ========================================================== Filter 4 (Merge Images) ========================================================== //
 Image Merge_Images(Image &photo11, Image &photo22){
     // Declare minimum width and minimum height to unify dimensions for both photos
-    int width = min(photo11.width, photo22.width);
-    int height = min(photo11.height, photo22.height);
+    char choice ;
+    int width ,height ;
+    cout<<"enter your choice\n1)resize image with bigger width and bigger height\n 2)resize image with smaller width and smaller height: ";
+    cin>>choice;
+    while (!(choice=='1'|| choice=='2')){
+        cout<<"please enter a valid choice\n1)resize image with bigger width and bigger height\n2)resize image with smaller width and smaller height: ";
+        cin>>choice;
+    }
+    if (choice=='1'){
+     width = max(photo11.width, photo22.width);
+     height = max(photo11.height, photo22.height);
+    }
+    else if (choice=='2'){
+     width = min(photo11.width, photo22.width);
+     height = min(photo11.height, photo22.height);}
 
     Image photo_result(width, height);                                          // Create the new photo
     Image photo1_sized(width, height);
@@ -190,7 +203,7 @@ Image Merge_Images(Image &photo11, Image &photo22){
             }
         }
     }
-                        
+                      
     for (int i = 0; i < photo_result.width; ++i) {                              // Applying merge
         for (int j = 0; j < photo_result.height; ++j) {
             for (int k = 0; k < 3; ++k) {
@@ -200,6 +213,7 @@ Image Merge_Images(Image &photo11, Image &photo22){
             }
         }
     }
+
     return photo_result;
 }
 
@@ -748,6 +762,7 @@ int main(){
             name2 = load(name2);
             Image image2(name2);
             image = Merge_Images(image, image2);
+            cout<<"hello";
         }
 
         // Applying filter 5 (Flip Image).
