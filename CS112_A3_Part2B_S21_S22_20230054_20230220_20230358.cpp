@@ -175,46 +175,81 @@ Image Invert_Image(Image &image){
 // ========================================================== Filter 4 (Merge Images) ========================================================== //
 Image Merge_Images(Image &photo11, Image &photo22){
     // Declare minimum width and minimum height to unify dimensions for both photos
-    char choice ;
+    string choice ;
     int width ,height ;
-    cout<<"enter your choice\n1)resize image with bigger width and bigger height\n 2)resize image with smaller width and smaller height: ";
-    cin>>choice;
-    while (!(choice=='1'|| choice=='2')){
-        cout<<"please enter a valid choice\n1)resize image with bigger width and bigger height\n2)resize image with smaller width and smaller height: ";
-        cin>>choice;
-    }
-    if (choice=='1'){
-     width = max(photo11.width, photo22.width);
-     height = max(photo11.height, photo22.height);
-    }
-    else if (choice=='2'){
-     width = min(photo11.width, photo22.width);
-     height = min(photo11.height, photo22.height);}
+    cout << "\n----------------------------------------------------------------------" << endl << endl;
+    cout << "What do you want to do ?\n" << "[1] Resize images to the biggest width height.\n" << "[2] Resize images to the biggest width height.\n" << "[3] Back.\nChoice: ";
+    getline(cin, choice);
+    while (true){
+        if (choice=="1"){
+            width = max(photo11.width, photo22.width);
+            height = max(photo11.height, photo22.height);
+            Image photo_result(width, height);                                          // Create the new photo
+            Image photo1_sized(width, height);
+            Image photo2_sized(width, height);
 
-    Image photo_result(width, height);                                          // Create the new photo
-    Image photo1_sized(width, height);
-    Image photo2_sized(width, height);
-    for (int x = 0; x < width; x++) {
-        for (int y = 0; y < height; y++) {
-            for (int z = 0; z < 3; z++) {
-                // Resize the new photos by discarding unneeded pixels based on the ratio between dimensions
-                photo1_sized(x, y, z) = photo11(x*(photo11.width/(float) width), y*(photo11.height/(float) height), z); // Resize photo 1
-                photo2_sized(x, y, z) = photo22(x*(photo22.width/(float) width), y*(photo22.height/(float) height), z); // Resize photo 2
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    for (int z = 0; z < 3; z++) {
+                        // Resize the new photos by discarding unneeded pixels based on the ratio between dimensions
+                        photo1_sized(x, y, z) = photo11(x*(photo11.width/(float) width), y*(photo11.height/(float) height), z); // Resize photo 1
+                        photo2_sized(x, y, z) = photo22(x*(photo22.width/(float) width), y*(photo22.height/(float) height), z); // Resize photo 2
+                    }
+                }
             }
+                            
+            for (int i = 0; i < photo_result.width; ++i) {                              // Applying merge
+                for (int j = 0; j < photo_result.height; ++j) {
+                    for (int k = 0; k < 3; ++k) {
+                        int avrg = 0;
+                        avrg = (photo1_sized(i,j,k) + photo2_sized(i,j,k))/2;
+                        photo_result(i, j, k) = avrg;
+                    }
+                }
+            }
+            return photo_result;
+        }
+
+        else if (choice=="2"){
+            width = min(photo11.width, photo22.width);
+            height = min(photo11.height, photo22.height);
+            Image photo_result(width, height);                                          // Create the new photo
+            Image photo1_sized(width, height);
+            Image photo2_sized(width, height);
+
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    for (int z = 0; z < 3; z++) {
+                        // Resize the new photos by discarding unneeded pixels based on the ratio between dimensions
+                        photo1_sized(x, y, z) = photo11(x*(photo11.width/(float) width), y*(photo11.height/(float) height), z); // Resize photo 1
+                        photo2_sized(x, y, z) = photo22(x*(photo22.width/(float) width), y*(photo22.height/(float) height), z); // Resize photo 2
+                    }
+                }
+            }
+                            
+            for (int i = 0; i < photo_result.width; ++i) {                              // Applying merge
+                for (int j = 0; j < photo_result.height; ++j) {
+                    for (int k = 0; k < 3; ++k) {
+                        int avrg = 0;
+                        avrg = (photo1_sized(i,j,k) + photo2_sized(i,j,k))/2;
+                        photo_result(i, j, k) = avrg;
+                    }
+                }
+            }
+            return photo_result;
+        }
+
+        // Back to the main menu.
+        else if (choice == "3"){
+            return photo11;
+            break;
+        }
+            
+        else{
+            cout << "Please enter a valid choice." << endl;   
+            continue;
         }
     }
-                      
-    for (int i = 0; i < photo_result.width; ++i) {                              // Applying merge
-        for (int j = 0; j < photo_result.height; ++j) {
-            for (int k = 0; k < 3; ++k) {
-                int avrg = 0;
-                avrg = (photo1_sized(i,j,k) + photo2_sized(i,j,k))/2;
-                photo_result(i, j, k) = avrg;
-            }
-        }
-    }
-
-    return photo_result;
 }
 
 // ========================================================== Filter 5 (Flip) ========================================================== //
@@ -419,7 +454,7 @@ Image Frame_Image(Image &image){
         cout << "\n----------------------------------------------------------------------" << endl << endl;
         cout << "What type of frame do you want ?\n[1] Simple.\n[2] Fancy.\n[3] Back.\nChoice: ";
         string choice2;
-        cin >> choice2;
+        getline(cin,choice2);
 
         // Apply a Simple frame.
         if (choice2 == "1"){
@@ -449,7 +484,7 @@ Image Frame_Image(Image &image){
             cout << "\n----------------------------------------------------------------------" << endl << endl;
             cout << "Which frame do you want ?\n[1] Frame 1.\n[2] Frame 2.\n[3] Back.\nChoice: ";
             string choice_frame;
-            cin >> choice_frame;
+            getline(cin, choice_frame);
 
             while (true)
             {
@@ -645,7 +680,7 @@ Image Blur_Image(Image &image){
 }
 
 // ========================================================== Filter 13 (Natural sunlight) ========================================================== //
-Image natural_sunlight(Image &image){
+Image Natural_sunlight(Image &image){
     for(int i = 0; i < image.width; i++) {
         for(int j = 0; j < image.height; j++) {
             if (image(i, j, 1) <= 220) image(i, j, 1) += 35;  // Check for underflow
@@ -662,7 +697,7 @@ Image natural_sunlight(Image &image){
 }
 
 // ========================================================== Filter 14 (Purple Image) ========================================================== //
-Image purple_Image(Image &image){
+Image Purple_Image(Image &image){
     for(int i = 0; i < image.width; i++) {
         for(int j = 0; j < image.height; j++) {
             if (image(i, j, 0) <= 240) image(i, j, 0) += 15;  // Check for overflow
@@ -762,7 +797,6 @@ int main(){
             name2 = load(name2);
             Image image2(name2);
             image = Merge_Images(image, image2);
-            cout<<"hello";
         }
 
         // Applying filter 5 (Flip Image).
@@ -805,14 +839,14 @@ int main(){
             image = Blur_Image(image);
         }
        
-        // Applying filter 13 (natural sunlight).
+        // Applying filter 13 (Natural sunlight).
         else if (choice1 == "14"){
-            image = natural_sunlight(image);
+            image = Natural_sunlight(image);
         }
 
-        // Applying filter 14 (purple Image).
+        // Applying filter 14 (Purple Image).
         else if (choice1 == "15"){
-            image = purple_Image(image);
+            image = Purple_Image(image);
         }
 
         // Applying filter 15 (Infrared Photography).
