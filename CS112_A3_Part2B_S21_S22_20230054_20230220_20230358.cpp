@@ -616,36 +616,59 @@ Image Frame_Image(Image &image){
 }
 
 // ========================================================== Filter 10 (Detect_Image_Edges) ========================================================== //
-Image Detect_Image_Edges(Image &image){
-    for (int i = 1; i < image.width-1 ; i++){
-        for (int j = 1; j < image.height-1; j++){
-            if ((!((image(i,j,0) <= (image(i+1 , j , 0)+10 ))||image(i,j,0) >= (image(i-1 , j , 0)-10  ) ))&&
-                (!((image(i,j,1) <= (image(i+1 , j , 1)+10 ))||image(i,j,1) >= (image(i-1 , j , 1)-10  ) ))&& 
-                (!(image(i,j,2) <= (image(i+1 , j , 2)+10  )||image(i,j,2) >= (image(i-1 , j , 2)-10  ) ))) {
-                    image(i,j,0) =0;
-                    image(i,j,1) =0;           
-                    image(i,j,2) =0;
+Image Detect_Image_Edges(Image &image) {
+    for (int i = 0; i < image.width; i++) {
+        for (int j = 0; j < image.height; j++) {
+            unsigned int avg = 0;  // Initialize average value.
+            for (int k = 0; k < 3; k++) {
+                avg += image(i, j, k);  // Accumulate pixel values.
             }
 
-            else if (!((image(i,j,0) <= (image(i , j+1, 0)+10 )||image(i,j,0) >= (image(i , j-1 , 0)-10  ) ))) {
-                if (!((image(i,j,1) <= (image(i , j+1 , 1)+10 )||image(i,j,1) >= (image(i , j-1 , 1)-10  ) ))) {
-                    if (!((image(i,j,2) <= (image(i , j+1 , 2)+10  )||image(i,j,2) >= (image(i , j-1 , 2)-10  ) ))) {
-                        image(i,j,0) =0;
-                        image(i,j,1) =0;           
-                        image(i,j,2) =0;
-                    }
-                }
+            avg /= 3;  // Calculate average.
+            int val;
+
+            if (avg > 127) {
+                val = 255;
+            } else {
+                val = 0;
+            }
+
+            // Set all channels to either 0 or 255 (to obtain black and white only)
+            image(i, j, 0) = val;
+            image(i, j, 1) = val;
+            image(i, j, 2) = val;
+        }
+    }
+
+    for (int i = 0; i < image.width; i++) {
+        bool flag = false;
+        bool flag2 = false;
+        for (int j = 1; j < image.width; j++) {        
+            if (j > 0 && image(i, j - 1, 0) == 255 && image(i, j, 0) == 0 && !flag) {
+                flag2 = false;
+                flag = true;
+                image(i, j, 0) = 0;
+                image(i, j, 1) = 0;
+                image(i, j, 2) = 0;
+            }
+
+            else if (j < image.width - 1 && image(i, j, 0) == 0 && image(i, j + 1, 0) == 255 && !flag2){
+                flag = false;
+                flag2 = true;
+                image(i, j, 0) = 0;
+                image(i, j, 1) = 0;
+                image(i, j, 2) = 0;
             }
 
             else{
-                image(i,j,0) =255;
-                image(i,j,1) =255;           
-                image(i,j,2) =255;
+                image(i, j, 0) = 255;
+                image(i, j, 1) = 255;
+                image(i, j, 2) = 255;
             }
         }
     }
     return image;
-}
+}            
 
 // ========================================================== Filter 11 (Resizing Images) ========================================================== //
 Image Resizing_Image(Image &image){
