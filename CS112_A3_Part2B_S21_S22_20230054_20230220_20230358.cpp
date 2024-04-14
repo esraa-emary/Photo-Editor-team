@@ -22,7 +22,7 @@ System Diagram      :   https://drive.google.com/file/d/1Ajg6YGb8BwUtIZscLoIEWw0
 #include <vector>
 #include <regex>
 #include <windows.h>
-#include "Image_Class.h"
+#include "Image_Class/Image_Class.h"
 using namespace std;
 
 // Save the effect in a new photo or the same one.
@@ -776,21 +776,24 @@ Image Detect_Image_Edges(Image &image) {
 
 // ========================================================== Filter 11 (Resizing Images) ========================================================== //
 Image Resizing_Image(Image &image){
-    float width, height;
+    string width, height;
     cout << "\n----------------------------------------------------------------------" << endl << endl;
-    cout << "Please enter the width you want:\n--> ";                               // Read the width.
-    cin >>  width;
+    cout << "Please enter the width you want:\n--> ";// Read the width.
+    getline(cin, width);
+    width = validateDimension(width, 6000);
     cout << "\n----------------------------------------------------------------------" << endl << endl;
-    cout << "Please enter the height you want:\n--> ";                              // Read the height.
-    cin >> height;
-    cin.ignore();
+    cout << "Please enter the height you want:\n--> ";  
+    getline(cin, height);                            // Read the height.
+    height = validateDimension(height, 6000);
 
-    Image image_result(width,height);
-    float step_width1 = image.width/width;
-    float step_height1 = image.height/height;
+    float w = stof(width), h = stof(height);
 
-    for(int i =0 ;i<width;i++){
-        for(int j=0;j<height;j++){
+    Image image_result(w,h);
+    float step_width1 = image.width/w;
+    float step_height1 = image.height/h;
+
+    for(int i =0 ;i<w;i++){
+        for(int j=0;j<h;j++){
             for(int k=0;k<3;k++){
                 image_result(i,j,k) = image((i*step_width1) , (j*step_height1),k);   // Change pixel values. 
             }
@@ -1065,7 +1068,7 @@ int main(){
         if (filter) {
             cout << "\n----------------------------------------------------------------------" << endl << endl;
             cout << "- Filter has been applied succesfully!\n";
-            Sleep(1500);
+            Sleep(1000);
         }
     }
     cout << "\n----------------------------------------------------------------------" << endl << endl;
