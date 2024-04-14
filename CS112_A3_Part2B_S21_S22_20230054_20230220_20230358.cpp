@@ -21,6 +21,7 @@ System Diagram      :   https://drive.google.com/file/d/1Ajg6YGb8BwUtIZscLoIEWw0
 #include <bits/stdc++.h>
 #include <vector>
 #include <regex>
+#include <windows.h>
 #include "Image_Class.h"
 using namespace std;
 
@@ -120,7 +121,7 @@ string load(string &name){
 }
 
 // Validate input as numbers (digits only) then check it's within the specified dimension range.
-// Called in Crop_Image()
+// Called in Crop_Image() and Blur_Image()
 string validateDimension(string num, int max_dimension) {
     regex digits ("\\d+");
 
@@ -129,8 +130,8 @@ string validateDimension(string num, int max_dimension) {
         getline(cin, num);
     }
 
-    while (stoi(num) <= max_dimension) {
-        cout << "\n- Wrong Input! Dimension should not exceed (" << max_dimension << ") !\n"
+    while (!(stoi(num) > 0 && stoi(num) <= max_dimension)) {
+        cout << "\n- Wrong Input! Dimension should not exceed (" << max_dimension << ") and not zero!\n"
              << "- Please enter a valid dimension\n--> ";
         getline(cin, num);
         return validateDimension(num, max_dimension);
@@ -139,6 +140,47 @@ string validateDimension(string num, int max_dimension) {
     return num;
 }
 
+// Apply Prefix Sum matrix to get the sum of all channels associated to pixels in one matrix
+// Optimizing time complexity of Blur_Image()
+vector <vector <vector<int>>> sumMatrix(Image image) {
+    int w = image.width;
+    int h = image.height;
+
+    // Declare a 3D vector to store sum values of RGB channels
+    vector<vector<vector<int>>> sum_mat(w, vector<vector<int>>(h, vector<int>(3))); // Initialize all values to 0
+    // We have to initialize the edges of the array to avoid reaching the constrains while looping
+
+    // Initialize the corner element
+    sum_mat[0][0][0] = image(0, 0, 0);
+    sum_mat[0][0][1] = image(0, 0, 1);
+    sum_mat[0][0][2] = image(0, 0, 2);
+
+    // Initialize first row
+    for (int i = 1; i < w; i++) {
+        for (int k = 0; k < 3; k++) {
+            sum_mat[i][0][k] = sum_mat[i-1][0][k] + image(i, 0, k);
+        }
+    }
+
+    // Initialize first column
+    for (int i = 1; i < h; i++) {
+        for (int k = 0; k < 3; k++) {
+            sum_mat[0][i][k] = sum_mat[0][i-1][k] + image(0, i, k); 
+        }
+    }
+    
+    // Apply the sum
+    for (int i = 1; i < w; i++) {
+        for (int j = 1; j < h; j++) {
+            for (int k = 0; k < 3; k++) {
+                sum_mat[i][j][k] = sum_mat[i - 1][j][k] + sum_mat[i][j - 1][k]
+                                   - sum_mat[i - 1][j - 1][k] + image(i, j, k);
+            }
+        }
+    }
+
+    return sum_mat;
+}
 
 // ========================================================== Main Functions ========================================================== //
 
@@ -760,8 +802,62 @@ Image Resizing_Image(Image &image){
 
 // ========================================================== Filter 12 (Blur Image) ========================================================== //
 Image Blur_Image(Image &image){
+    cout << "\n----------------------------------------------------------------------" << endl << endl;
+    int w = image.width;
+    int h = image.height;
+    Image result(w, h);
+    string radius;
 
-    return image;
+    // Get kernel radius
+    cout << "- Please enter blur radius (should be between 1 and 100)\n--> ";
+    getline(cin, radius);
+    radius = validateDimension(radius, 100);
+    int r = stoi(radius), kernel_s = (2*r+1), kernel_a = kernel_s*kernel_s;
+    
+    cout << "----------------------------------------------------------------------" << endl << endl;
+    cout << "Blurring in progress...\n";
+    
+    vector<vector<vector<int>>> sum_mat = sumMatrix(image);
+
+    for (int i = 0; i < w; ++i) {
+        for (int j = 0; j < h; ++j) {
+            for (int k = 0; k < 3; ++k) {
+                unsigned int avg = 0, sum = 0;
+                int a = (i + r), b = (j + r),
+                    c = (i - r - 1), d = (j - r - 1);
+                int max_val, bl, tr, tl;    // Corners to apply prefix sum method (Bottom-Right, Bottom-Left- Top-Right-Top-Left)
+
+                // Handling edge cases (where a, b, c and d exceeds the image dimensions)
+                if (a > (w - 1) || b > (h - 1))
+                    max_val = sum_mat[min(a, w-1)][min(b, h-1)][k];
+                else 
+                    max_val = sum_mat[a][b][k];
+
+                if (c < 0 || b > (h - 1))
+                    bl = sum_mat[max(c, 0)][min(b, h-1)][k];
+                else
+                    bl = sum_mat[c][b][k];
+
+                if (a > (w - 1) || d < 0)
+                    tr = sum_mat[min(a, w-1)][max(d, 0)][k];
+                else
+                    tr = sum_mat[a][d][k];
+                
+                if (c < 0 || d < 0)
+                    tl = sum_mat[max(c, 0)][max(d, 0)][k];
+                else
+                    tl = sum_mat[c][d][k];
+                
+                // Formula to get the sum of the nighboring pixels
+                sum = max_val - bl - tr + tl;
+                // Get average value for the neighboring pixels
+                avg = (sum) / kernel_a;
+                result(i, j, k) = avg;  // Applying pixel values
+            }
+        }
+    }
+
+    return result;
 }
 
 // ========================================================== Filter 13 (Natural sunlight) ========================================================== //
@@ -824,6 +920,7 @@ int main(){
     string name;
     Image image;
     bool flag = false;
+    
     while (true){
         cout << "\n----------------------------------------------------------------------" << endl << endl;
         cout << "What do you want to do ?\n"<< "[1]  Load a new image.\n" << "[2]  Grayscale Conversion.\n" << "[3]  Black and White.\n" << "[4]  Invert Image.\n" << "[5]  Merge Images.\n" 
@@ -832,12 +929,14 @@ int main(){
         string choice1;
         getline(cin, choice1);
 
-        // Check that the user enrered an image at first.
+        bool filter = true;
+        // Check that the user enrered an image first.
         if (count == 0 && (choice1 == "2" || choice1 == "3" || choice1 == "4" || choice1  == "5" || choice1  == "6" || choice1  == "7" || 
             choice1  == "8" || choice1  == "9" || choice1  == "10" || choice1  == "11" || choice1  == "12" || choice1  == "13" || 
             choice1  == "14" || choice1  == "15" || choice1  == "16" || choice1  == "17")){
             cout << "\n----------------------------------------------------------------------" << endl << endl;
-            cout << "Please load an image at first.\n";
+            cout << "Please load an image first.\n";
+            filter = false;
             continue;
         }
 
@@ -855,6 +954,7 @@ int main(){
             Image image1 (name);
             image = image1;
             count ++;
+            filter = false;
         }
 
         // Applying filter 1 (Grayscale Conversion).
@@ -941,6 +1041,7 @@ int main(){
 
         // Save the image.
         else if (choice1 == "17"){
+            filter = false;
             if (flag){
                 how_to_save2(image);
                 flag = false;
@@ -955,9 +1056,16 @@ int main(){
 
         // Invalid choice.
         else{
+            filter = false;
             cout << "\n----------------------------------------------------------------------" << endl << endl;
             cout << "Please enter a valid choice." << endl;   
             continue;
+        }
+
+        if (filter) {
+            cout << "\n----------------------------------------------------------------------" << endl << endl;
+            cout << "- Filter has been applied succesfully!\n";
+            Sleep(1500);
         }
     }
     cout << "\n----------------------------------------------------------------------" << endl << endl;
