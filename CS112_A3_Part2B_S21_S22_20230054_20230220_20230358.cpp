@@ -19,6 +19,8 @@ System Diagram      :   https://drive.google.com/file/d/1Ajg6YGb8BwUtIZscLoIEWw0
 
 #include <iostream>
 #include <bits/stdc++.h>
+#include <vector>
+#include <regex>
 #include "Image_Class.h"
 using namespace std;
 
@@ -116,6 +118,27 @@ string load(string &name){
         }
     }
 }
+
+// Validate input as numbers (digits only) then check it's within the specified dimension range.
+// Called in Crop_Image()
+string validateDimension(string num, int max_dimension) {
+    regex digits ("\\d+");
+
+    while (!(regex_match(num, digits))) {
+        cout << "\n- Wrong Input! Please enter a valid number\n--> ";
+        getline(cin, num);
+    }
+
+    while (stoi(num) <= max_dimension) {
+        cout << "\n- Wrong Input! Dimension should not exceed (" << max_dimension << ") !\n"
+             << "- Please enter a valid dimension\n--> ";
+        getline(cin, num);
+        return validateDimension(num, max_dimension);
+    }
+
+    return num;
+}
+
 
 // ========================================================== Main Functions ========================================================== //
 
@@ -439,8 +462,46 @@ Image Darken_and_Lighten(Image &image){
 
 // ========================================================== Filter 8 (Crop Image) ========================================================== //
 Image Crop_Image(Image &image){
+    cout << "\n----------------------------------------------------------------------" << endl << endl;
 
-    return image;
+    // Get starting dimension
+    cout << "\n- Enter the dimensions to start cropping from:\n";
+    string start_w, start_h;
+    cout << "\n- Width --> ";
+    getline(cin, start_w);
+    start_w = validateDimension(start_w, image.width);
+
+    cout << "\n- Height --> ";
+    getline(cin, start_h);
+    start_w = validateDimension(start_h, image.height);
+
+
+    // Get new dimensions
+    cout << "\n- Enter the new dimensions:\n";
+    string width, height;
+    cout << "\n- Width --> ";
+    getline(cin, width);
+    width = validateDimension(width, image.width - stoi(start_w));
+
+    cout << "\n- Height --> ";
+    getline(cin, height);
+    height = validateDimension(height, image.height - stoi(start_h));
+
+    // Assigning dimensions as integer types
+    int w = stoi(width), h = stoi(height);
+    int w_start = stoi(start_w), h_start = stoi(start_h);
+
+    Image result(w, h);
+
+    for(int i = 0; i < w; i++){
+        for(int j = 0; j < h; j++){
+            for(int k = 0; k < 3; k++){
+                result(i, j, k) = image(w_start + i, w_start + j, k);
+            }
+        }  
+    }
+
+    return result;
 }
 
 // ========================================================== Filter 9 (Adding a Frame to the Picture) ========================================================== //
