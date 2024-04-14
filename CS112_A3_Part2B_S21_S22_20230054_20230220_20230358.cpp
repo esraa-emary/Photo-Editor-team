@@ -244,7 +244,7 @@ Image Merge_Images(Image &photo11, Image &photo22){
     string choice ;
     int width ,height ;
     cout << "\n----------------------------------------------------------------------" << endl << endl;
-    cout << "What do you want to do ?\n" << "[1] Resize images to the biggest width height.\n" << "[2] Resize images to the biggest width height.\n" << "[3] Back.\nChoice: ";
+    cout << "What do you want to do ?\n" << "[1] Resize images to the biggest width height.\n" << "[2] Resize images to the smallest width height.\n" << "[3] Back.\nChoice: ";
     getline(cin, choice);
     while (true){
         if (choice=="1"){
@@ -747,7 +747,7 @@ Image Detect_Image_Edges(Image &image) {
     for (int i = 0; i < image.width; i++) {
         bool flag = false;
         bool flag2 = false;
-        for (int j = 1; j < image.width; j++) {        
+        for (int j = 1; j < image.height-1; j++) {        
             if (j > 0 && image(i, j - 1, 0) == 255 && image(i, j, 0) == 0 && !flag) {
                 flag2 = false;
                 flag = true;
