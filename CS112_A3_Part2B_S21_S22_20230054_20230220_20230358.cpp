@@ -22,7 +22,7 @@ System Diagram      :   https://drive.google.com/file/d/1Ajg6YGb8BwUtIZscLoIEWw0
 #include <vector>
 #include <regex>
 #include <windows.h>
-#include "Image_Class/Image_Class.h"
+#include "Image_Class.h"
 using namespace std;
 
 // Save the effect in a new photo or the same one.
