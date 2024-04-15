@@ -7,3 +7,5 @@ test.cpp
 test.exe
 *.exe
 *.exe
+GUI/.vs/GUI/v17/Browse.VC.db
+/GUI/.vs
