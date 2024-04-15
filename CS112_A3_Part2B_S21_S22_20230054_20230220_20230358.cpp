@@ -3,10 +3,10 @@ File name   :   CS112_A3_Part2B_S21_S22_20230054_20230220_20230358.cpp
 Purpose     :   Make an application that takes a photo and apply a filter to it.
 Version     :   3.0
 
-                              Authors                   |           Filters         |                   Contributions
----> 1: Esraa Emary Abd Elsalam.          ID: 20230054  |   Merge - Lighten/Darken  |   how_to_save() - Main menu - Output formatting
----> 2: Abdelrahman Yasser Ali.           ID: 20230220  |     Black/White - Flip    |            load() - Filters adjustments
----> 2: Mohamed Nabil Elsaied Ali.        ID: 20230358  |      Rotate - Invert      |                  Resizing algorithm
+                              Authors                   |                                 Filters                                  |                            Contributions
+---> 1: Esraa Emary Abd Elsalam.          ID: 20230054  |   Merge - Lighten/Darken - Detect Edges - Purple - Sunlight - Infrared   |              how_to_save() - Main menu - Output formatting
+---> 2: Abdelrahman Yasser Ali.           ID: 20230220  |                     Black/White - Flip - Crop - Blur                     |    load() - Filters adjustments - sumMatrix() - validateDimension()
+---> 2: Mohamed Nabil Elsaied Ali.        ID: 20230358  |                     Rotate - Invert - Frame - Resize                     |           Resizing algorithm -  Sizing options for Merge filter
 
 
 Professor           :   Dr.Mohamed ElRamly
@@ -121,7 +121,7 @@ string load(string &name){
 }
 
 // Validate input as numbers (digits only) then check it's within the specified dimension range.
-// Called in Crop_Image() and Blur_Image()
+// Called in Crop_Image(), Blur_Image() and Resizing_Image()
 string validateDimension(string num, int max_dimension) {
     regex digits ("\\d+");
 
@@ -1068,7 +1068,7 @@ int main(){
         if (filter) {
             cout << "\n----------------------------------------------------------------------" << endl << endl;
             cout << "- Filter has been applied succesfully!\n";
-            Sleep(1000);
+            Sleep(1000);    // Wait a second to allow user to read the message
         }
     }
     cout << "\n----------------------------------------------------------------------" << endl << endl;
